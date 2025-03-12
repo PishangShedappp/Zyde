@@ -319,6 +319,7 @@ export class Workbench extends Layout {
 		]);
 
 		this.mainContainer.classList.add(...workbenchClasses);
+		this.mainContainer.classList.add('zyde-style');
 
 		// Apply font aliasing
 		this.updateFontAliasing(undefined, configurationService);

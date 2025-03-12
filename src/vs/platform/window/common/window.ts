@@ -225,7 +225,7 @@ export function getTitleBarStyle(configurationService: IConfigurationService): T
 	return TitlebarStyle.CUSTOM; // default to custom on all OS
 }
 
-export const DEFAULT_CUSTOM_TITLEBAR_HEIGHT = 35; // includes space for command center
+export const DEFAULT_CUSTOM_TITLEBAR_HEIGHT = 44; // includes space for command center
 
 export function useWindowControlsOverlay(configurationService: IConfigurationService): boolean {
 	if (isWeb) {

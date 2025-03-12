@@ -52,8 +52,8 @@ function hasSupportedVisualStudioVersion() {
 			availableVersions.push(version);
 			break;
 		}
-		const programFiles86Path = process.env['ProgramFiles(x86)'];
-		const programFiles64Path = process.env['ProgramFiles'];
+		const programFiles86Path = 'D:\\Program Files (x86)';
+		const programFiles64Path = 'D:\\Program Files';
 
 		const vsTypes = ['Enterprise', 'Professional', 'Community', 'Preview', 'BuildTools', 'IntPreview'];
 		if (programFiles64Path) {

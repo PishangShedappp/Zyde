@@ -1,0 +1,21 @@
+{
+  "name": "Zyde-Light",
+  "displayName": "Zyde-Light",
+  "description": "Zyde IDE Light theme",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Light",
+        "uiTheme": "vs",
+        "path": "./themes/Light-color-theme.json"
+      }
+    ]
+  }
+}

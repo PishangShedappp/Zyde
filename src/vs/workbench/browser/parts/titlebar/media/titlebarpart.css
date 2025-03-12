@@ -15,17 +15,16 @@
 
 /* Root Container */
 .monaco-workbench .part.titlebar > .titlebar-container {
-	box-sizing: border-box;
-	overflow: hidden;
-	flex-shrink: 1;
-	flex-grow: 1;
 	align-items: center;
-	justify-content: space-between;
-	user-select: none;
-	-webkit-user-select: none;
+	box-sizing: border-box;
 	display: flex;
+	flex-grow: 1;
 	height: 100%;
 	width: 100%;
+	justify-content: space-between;
+	overflow: hidden;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 /* Account for zooming */
@@ -41,8 +40,7 @@
 .monaco-workbench.web .part.titlebar > .titlebar-container,
 .monaco-workbench.windows .part.titlebar > .titlebar-container,
 .monaco-workbench.linux .part.titlebar > .titlebar-container {
-	line-height: 22px;
-	justify-content: left;
+	z-index: 39;
 }
 
 .monaco-workbench.web.safari .part.titlebar,
@@ -66,47 +64,79 @@
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left,
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center,
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-right {
-	display: flex;
-	height: 100%;
+	display: -webkit-inline-box
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center,
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left,
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-right {
 	align-items: center;
+	display: flex;
+	height: calc(100% - 12px);
+	z-index: 36;
 }
 
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left {
 	order: 0;
-	width: 20%;
-	flex-grow: 2;
 	justify-content: flex-start;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center > .action-toolbar-container,
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container,
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-right > .action-toolbar-container {
+	align-items: center;
+	z-index: 2500;
+	-webkit-app-region: no-drag;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container {
+	height: 100%;
+	position: relative;
+	width: 100%;
+}
+
+.monaco-workbench .titlebar-center, .monaco-workbench .titlebar-left, .monaco-workbench .titlebar-right {
+	-webkit-app-region: no-drag;
+}
+
+.monaco-workbench.zyde-style .part.titlebar > .titlebar-container > .titlebar-left {
+	display: flex;
+	flex-grow: 1;
+	flex-shrink: 1;
+	min-width: 210px;
 }
 
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center {
 	order: 1;
-	width: 60%;
-	max-width: fit-content;
-	min-width: 0px;
-	margin: 0 10px;
-	/* flex-shrink: 10; */
+	flex-grow: 0;
+	flex-shrink: 0;
 	justify-content: center;
+	margin: 0 10px;
+	max-width: fit-content;
+	min-width: 0;
 }
 
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-right {
 	order: 2;
-	width: 20%;
 	min-width: min-content;
-	flex-grow: 2;
+	flex-grow: 0;
+	flex-shrink: 0;
 	justify-content: flex-end;
 }
 
+.monaco-workbench.zyde-style .part.titlebar > .titlebar-container > .titlebar-center {
+	margin: 0;
+}
 
+@media screen and (max-width: 1024px) {
+	.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center {
+		position: relative;
+	}
+}
 
 /* Window title text */
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center > .window-title {
-	flex: 0 1 auto;
-	font-size: 12px;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	margin-left: auto;
-	margin-right: auto;
+	display: none;
 }
 
 .monaco-workbench.web .part.titlebar > .titlebar-container > .titlebar-center > .window-title,
@@ -213,24 +243,6 @@
 	border-color: var(--vscode-commandCenter-activeBorder);
 }
 
-/* Menubar */
-.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .menubar {
-	/* move menubar above drag region as negative z-index on drag region cause greyscale AA */
-	z-index: 2500;
-	min-width: 36px;
-	flex-wrap: nowrap;
-	order: 2;
-}
-
-.monaco-workbench.web .part.titlebar > .titlebar-container > .titlebar-left > .menubar {
-	margin-left: 4px;
-}
-
-.monaco-workbench .part.titlebar > .titlebar-container.counter-zoom .menubar .menubar-menu-button > .menubar-menu-items-holder.monaco-menu-container,
-.monaco-workbench .part.titlebar > .titlebar-container.counter-zoom .monaco-toolbar .dropdown-action-container {
-	zoom: var(--zoom-factor); /* helps to position the menu properly when counter zooming */
-}
-
 /* App Icon */
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .window-appicon {
 	width: 35px;
@@ -241,11 +253,24 @@
 	order: 1;
 }
 
+.monaco-workbench.zyde-style .titlebar-container .native-zyde-logo {
+	background-image: url('../../../media/code-icon.svg');
+	background-position: 50%;
+	background-repeat: no-repeat;
+	flex-shrink: 0;
+	height: 16px;
+	margin-left: 14px;
+	margin-right: 14px;
+	width: 16px;
+	-webkit-drag-region: drag;
+}
+
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .window-appicon:not(.codicon) {
 	background-image: url('../../../media/code-icon.svg');
 	background-repeat: no-repeat;
-	background-position: center center;
+	background-position: 50%;
 	background-size: 16px;
+	display: none;
 }
 
 .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .window-appicon.codicon {
@@ -254,6 +279,433 @@
 
 .monaco-workbench.fullscreen .part.titlebar > .titlebar-container > .titlebar-left > .window-appicon {
 	display: none;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container:not(.has-no-actions), .monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .layout-controls-container.show-layout-control {
+	display: flex;
+	justify-self: center;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-center > .action-toolbar-container:not(.has-no-actions){
+	display: flex;
+	justify-self: center;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-right > .action-toolbar-container:not(.has-no-actions) {
+	display: flex;
+	justify-self: center;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container .menubar-container {
+	flex-shrink: 1;
+	min-width: 28px;
+	overflow: hidden;
+}
+
+.codicon[class*="codicon-"] {
+    display: inline-block;
+    font: normal normal normal 16px / 1 codicon;
+    text-align: center;
+    text-decoration: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container .menubar[zyde-menubar-visibility="compact"] {
+	width: 28px;
+}
+
+.menubar.compact > .menubar-menu-button {
+    height: 100%;
+    padding: 0;
+    width: 100%;
+}
+
+.monaco-workbench .menubar .toolbar-toggle-more, .monaco-workbench .menubar > .menubar-menu-button {
+    color: var(--vscode-titleBar-activeForeground);
+}
+
+.menubar > .menubar-menu-button {
+    align-items: center;
+    box-sizing: border-box;
+    cursor: default;
+    display: flex;
+    -webkit-app-region: no-drag;
+    zoom: 1;
+    outline: 0 !important;
+    white-space: nowrap;
+}
+
+.monaco-workbench .titlebar-left .menubar-menu-button .toolbar-toggle-more.codicon-zyde-menuToggle {
+    padding: 0;
+    width: 28px;
+}
+
+.monaco-workbench .titlebar-left .menubar-menu-button .menubar-menu-title {
+    border-radius: 4px;
+    color: var(--vscode-zyde-colorTextDefault);
+    cursor: pointer;
+    font-weight: 400;
+    height: 28px;
+    line-height: 28px;
+}
+
+.menubar.compact .toolbar-toggle-more {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+.monaco-workbench .menubar .toolbar-toggle-more, .monaco-workbench .menubar > .menubar-menu-button {
+    color: var(--vscode-titleBar-activeForeground);
+}
+
+.monaco-workbench .codicon[class*="codicon-"] {
+    font-size: 16px;
+}
+
+.menubar .toolbar-toggle-more {
+    align-items: center;
+    display: flex;
+    height: 20px;
+    justify-content: center;
+    padding: 0 8px;
+    vertical-align: sub;
+    width: 20px;
+}
+
+.monaco-workbench .codicon {
+    color: var(--vscode-icon-foreground);
+}
+
+.menubar-menu-title {
+    border-radius: 5px;
+    padding: 0 8px;
+}
+
+.monaco-workbench .icube-title-left-menu-padding {
+	width: 6px;
+}
+
+.monaco-workbench .zyde-title-left-command-padding, .monaco-workbench .zyde-title-left-menu-padding {
+	border-left: 1px solid var(--vscode-commandCenter-border);
+	height: 16px;
+	margin-left: 12px;
+	position: static;
+	top: 50%;
+	transform: translateY(-50%);
+	transform: none;
+}
+
+.monaco-workbench .zyde-title-left-command-padding {
+	width: 12px;
+}
+
+.monaco-workbench .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container .zyde-devspace-titlebar-info {
+	align-items: center;
+	display: flex;
+	height: 100%;
+}
+
+.monaco-workbench.fullscreen .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container .zyde-devspace-titlebar-info,
+.monaco-workbench.windows .part.titlebar > .titlebar-container > .titlebar-left > .action-toolbar-container .zyde-devspace-titlebar-info {
+	margin-left: 6px;
+}
+
+.zyde-titlebar-info {
+	position: relative;
+	display: flex;
+	box-sizing: border-box;
+	max-width: 100%;
+	height: 28px;
+	padding: 0px 6px;
+	margin: 6px auto;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	font: var(--vscode-icon-foreground);
+	border-radius: 4px;
+}
+
+.zyde-titlebar-info-icon-wrapper {
+	flex: 0 0 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.zyde-titlebar-info.desktop .zyde-titlebar-info-icon-wrapper {
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.zyde-titlebar-info-workspace-name-wrapper {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    text-overflow: ellipsis;
+    max-width: 180px;
+    overflow-x: hidden;
+    white-space: nowrap;
+	max-width: 80px;
+}
+
+.zyde-titlebar-info-expanded-arrow-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: var(--vscode-icon-foreground);
+}
+
+.devspace-card {
+	display: none;
+	position: fixed;
+	top: 44px;
+	min-width: 240px;
+	max-width: 480px;
+	height: auto;
+	background: var(--vscode-commandCenter-activeBackground);
+	border-radius: 6px;
+	color: var(--vscode-zyde-colorTextDefault);
+	z-index: 100;
+	box-sizing: border-box;
+	box-shadow: var(--vscode-commandCenter-border, 0px 10px 50px rgba(0, 0, 0, 0.3));
+	border: 1px solid var(--vscode-commandCenter-inactiveBorder);
+}
+
+.devspace-card.show {
+	display: block;
+}
+
+.devspace-card-inner-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.project-list-container {
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 6px;
+	background-color: transparent;
+	display: flex;
+	flex-direction: column;
+	cursor: default;
+	box-shadow: var(--vscode-commandCenter-border, 0px 10px 50px rgba(0, 0, 0, 0.3));
+}
+
+.project-list-container-empty-content {
+	gap: 4px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 8px;
+}
+
+.action-list {
+	gap: 4px;
+	padding: 8px;
+	display: flex;
+	flex-direction: column;
+	border-bottom: 1px solid var(--vscode-commandCenter-border);
+}
+
+.action-list .clone-repo-button:hover,
+.action-list .open-folder-button:hover,
+.project-list-container-empty-content .open-folder-button:hover,
+.project-list-container-empty-content .clone-repo-button:hover {
+	background-color: var(--vscode-commandCenter-activeBackground);
+}
+
+.action-list .clone-repo-button,
+.action-list .open-folder-button,
+.project-list-container-empty-content .open-folder-button,
+.project-list-container-empty-content .clone-repo-button {
+	height: 28px;
+	border-radius: 4px;
+	display: inline-flex;
+	font-weight: 400;
+	align-items: center;
+	padding-left: 8px;
+	cursor: pointer;
+	box-sizing: border-box;
+	color: var(--vscode-zyde-colorTextDefault);
+	font-size: 13px;
+	background: transparent;
+}
+
+.action-list .open-folder-button .open-folder-button-icon,
+.action-list .clone-repo-button .clone-repo-button-icon,
+.project-list-container-empty-content .open-folder-button-icon,
+.project-list-container-empty-content .clone-repo-button-icon {
+	display: flex;
+	align-items: center;
+	margin-right: 8px;
+}
+
+.project-list-container .header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+	height: 20px;
+}
+
+.common-background {
+	background-color: transparent;
+}
+
+.project-list-container .header .title {
+	color: var(--vscode-zyde-colorTextDefault);
+	font-size: 12px;
+	font-style: normal;
+	line-height: 18px;
+	letter-spacing: 0.036px;
+	text-transform: capitalize;
+}
+
+.project-list-container .list-container {
+	max-height: min(376px, -163px + 100vh);
+	overflow-y: auto;
+}
+
+.project-list-container .project-list {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	padding: 0px 8px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.project-container {
+	height: 44px;
+	display: flex;
+	align-items: center;
+	padding: 0px 8px;
+	gap: 12px;
+	background-color: transparent;
+	border-radius: 4px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.project-container:hover {
+	background-color: var(--vscode-commandCenter-activeBackground);
+}
+
+.project-theme-icon {
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.project-theme-icon-text {
+	color: white;
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+.bottom-block {
+	height: 8px;
+}
+
+.project-info {
+	text-align: start;
+	flex: 1 1 0%;
+	overflow: hidden;
+}
+
+.project-name {
+	color: var(--vscode-zyde-colorTextDefault);
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: 0.03px;
+}
+
+.project-container .oneline-text {
+	overflow: hidden;
+	text-wrap: nowrap;
+	text-overflow: ellipsis;
+}
+
+.project-path {
+	margin-top: 2px;
+	color: var(--vscode-zyde-colorTextDefault);
+	font-size: 11px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: 0.03px;
+}
+
+.container {
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	position: relative;
+}
+
+.container .measure {
+	height: 0px;
+	position: absolute;
+	visibility: hidden;
+	white-space: nowrap;
+}
+
+.monaco-workbench .zyde-command-center-toggler-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	position: relative;
+	z-index: 9999;
+}
+
+.monaco-workbench .zyde-command-center-button-wrapper {
+	display: inline-flex;
+	align-items: center;
+	border-radius: 4px;
+	box-sizing: border-box;
+	cursor: pointer;
+	flex-direction: row;
+	height: 28px;
+	min-width: 210px;
+	padding: 0 6px;
+}
+
+.monaco-workbench.windows .titlebar-container[update-service="Error"] .zyde-command-center-button-wrapper,
+.monaco-workbench.windows .titlebar-container[update-service="downloading"] .zyde-command-center-button-wrapper,
+.monaco-workbench.windows .titlebar-container[update-service="ready"] .zyde-command-center-button-wrapper,
+.monaco-workbench.windows .titlebar-container[update-service="updating"] .zyde-command-center-button-wrapper {
+	min-width: 120px;
+}
+
+@media (max-width: 1150px) {
+	.monaco-workbench .zyde-command-center-button-wrapper {
+		min-width: 120px;
+	}
+}
+
+.monaco-workbench .zyde-command-center-button-icon {
+	color: var(--vscode-zyde-colorTextDefault);
+	font-size: 12px;
+	font-weight: 500;
 }
 
 /* Window Controls Container */
@@ -271,6 +723,19 @@
 .monaco-workbench.fullscreen .part.titlebar .window-controls-container {
 	display: none;
 	background-color: transparent;
+}
+
+.monaco-workbench .zyde-command-center-button-text {
+	color: var(--vscode-zyde-colorTextDefault);
+	font-size: 13px;
+	font-weight: 400;
+	margin-left: 6px;
+}
+
+.monaco-workbench:not(.fullscreen) .zyde-title-left-draggable-area {
+	flex-grow: 1;
+	height: 40px;
+	-webkit-app-region: drag;
 }
 
 /* Window Controls Container Web: Apply WCO environment variables (https://developer.mozilla.org/en-US/docs/Web/CSS/env#titlebar-area-x) */
