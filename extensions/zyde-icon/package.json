@@ -1,0 +1,68 @@
+{
+  "name": "vscode-jetbrains-icon-theme",
+  "displayName": "JetBrains Icon Theme",
+  "description": "JetBrains Icon Theme for VSCode",
+  "publisher": "chadalen",
+  "author": {
+    "name": "Chad Adams",
+    "email": "me@chadalen.com",
+    "url": "https://cadamsdev.com"
+  },
+  "version": "2.28.0",
+  "scripts": {
+    "prebuild": "tsx ./scripts/build/build.ts",
+    "package": "vsce package"
+  },
+  "license": "MIT",
+  "icon": "logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cadamsdev/vscode-jetbrains-icon-theme"
+  },
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "keywords": [
+    "jetbrains",
+    "icons",
+    "icon-theme",
+    "theme",
+    "intellij",
+    "webstorm",
+    "idea"
+  ],
+  "bugs": {
+    "url": "https://github.com/chadalen/vscode-jetbrains-icon-theme/issues"
+  },
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "Default Light Zyde Icon",
+        "label": "",
+        "path": "./dist/2023/light/theme.json"
+      },
+      {
+        "id": "Default Dark Zyde Icon",
+        "label": "",
+        "path": "./dist/2023/dark/theme.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@actions/core": "^1.10.1",
+    "@types/node": "^20.8.0",
+    "@vscode/vsce": "^2.19.0",
+    "semantic-release": "^21.0.6",
+    "semantic-release-vsce": "^5.5.10",
+    "svgson": "^5.3.1",
+    "tsx": "^3.13.0",
+    "typescript": "^5.2.2"
+  }
+}
