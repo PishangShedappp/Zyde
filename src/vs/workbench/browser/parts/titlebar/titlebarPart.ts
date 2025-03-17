@@ -225,7 +225,7 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 
 	get minimumHeight(): number {
 		const wcoEnabled = isWeb && isWCOEnabled();
-		let value = this.isCommandCenterVisible || wcoEnabled ? DEFAULT_CUSTOM_TITLEBAR_HEIGHT : 30;
+		let value = this.isCommandCenterVisible || wcoEnabled ? DEFAULT_CUSTOM_TITLEBAR_HEIGHT : 44;
 		if (wcoEnabled) {
 			value = Math.max(value, getWCOTitlebarAreaRect(getWindow(this.element))?.height ?? 0);
 		}
@@ -420,7 +420,7 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		titlebarInfoIconWrapperSvgMaskedGroup.setAttribute('mask', 'url(#mask0_1820_571926)');
 
 		const titlebarInfoIconWrapperSvgIconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-		titlebarInfoIconWrapperSvgIconPath.setAttribute('fill', '#5C6373');
+		titlebarInfoIconWrapperSvgIconPath.setAttribute('style', 'fill: var(--vscode-sideBarTitle-foreground)');
 		titlebarInfoIconWrapperSvgIconPath.setAttribute('d', 'M10.3616 3.94623L16.0295 7.0378C16.0786 7.06464 16.1191 7.10503 16.1459 7.15421C16.223 7.29561 16.1709 7.4728 16.0295 7.54991L10.3616 10.6415C10.1875 10.7365 9.97703 10.7365 9.80291 10.6415L4.13501 7.54991C3.99359 7.4728 3.94148 7.29561 4.01862 7.15421C4.04544 7.10503 4.08584 7.06464 4.13501 7.0378L9.80291 3.94623C9.97703 3.85126 10.1875 3.85126 10.3616 3.94623ZM4.77101 9.38307L4.81217 9.40272L10.082 12.1762L15.3521 9.40272C15.6372 9.25269 15.99 9.36215 16.14 9.64726C16.2901 9.93233 16.1806 10.2851 15.8955 10.4351L10.3568 13.3503C10.3458 13.3561 10.3346 13.3617 10.3233 13.3668L10.2934 13.3794L10.2422 13.3966L10.2196 13.4026L10.1801 13.4108L10.1301 13.4171L10.0926 13.419L10.0613 13.4187L10.0065 13.4141L9.97449 13.4091L9.9322 13.3995L9.89204 13.3872L9.85042 13.371L9.80775 13.3504L4.2688 10.4351C3.98371 10.2851 3.87423 9.93233 4.02428 9.64726C4.16718 9.37575 4.49394 9.26351 4.77101 9.38307ZM4.2688 13.0601L9.80775 15.9754L9.85042 15.996L9.89204 16.0122L9.9322 16.0245L9.97449 16.0341L10.0065 16.0391L10.0613 16.0437L10.0926 16.044L10.1301 16.0421L10.1801 16.0358L10.2196 16.0276L10.2422 16.0216L10.2934 16.0044L10.3233 15.9918C10.3346 15.9867 10.3458 15.9811 10.3568 15.9753L15.8955 13.0601C16.1806 12.9101 16.2901 12.5573 16.14 12.2723C15.99 11.9872 15.6372 11.8777 15.3521 12.0277L10.082 14.8012L4.81217 12.0277L4.77101 12.0081C4.49394 11.8885 4.16718 12.0007 4.02428 12.2723C3.87423 12.5573 3.98371 12.9101 4.2688 13.0601Z');
 		titlebarInfoIconWrapperSvgIconPath.setAttribute('fill-rule', 'evenodd');
 		titlebarInfoIconWrapperSvgIconPath.setAttribute('clip-rule', 'evenodd');
@@ -460,7 +460,7 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		titlebarInfoExpandedArrowWrapperSvg.setAttribute('style', 'transform: rotate(180deg)');
 
 		const titlebarInfoExpandedArrowWrapperSvgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-		titlebarInfoExpandedArrowWrapperSvgPath.setAttribute('fill', '#737780');
+		titlebarInfoExpandedArrowWrapperSvgPath.setAttribute('style', 'fill: var(--vscode-sideBarTitle-foreground)');
 		titlebarInfoExpandedArrowWrapperSvgPath.setAttribute('d', 'M9.47745 9.2686C9.70526 9.4964 10.0746 9.4964 10.3024 9.2686L10.7149 8.85613C10.9427 8.62831 10.9427 8.25897 10.7149 8.03116L7.41506 4.73133C7.30055 4.61682 7.15027 4.55986 7.00018 4.56048C6.8501 4.55986 6.69982 4.61682 6.58531 4.73133L3.28547 8.03116C3.05767 8.25897 3.05767 8.62831 3.28547 8.85612L3.69795 9.2686C3.92575 9.4964 4.29511 9.4964 4.52291 9.2686L7.00018 6.79132L9.47745 9.2686Z');
 		titlebarInfoExpandedArrowWrapperSvgPath.setAttribute('fill-rule', 'evenodd');
 		titlebarInfoExpandedArrowWrapperSvgPath.setAttribute('clip-rule', 'evenodd');
@@ -482,14 +482,14 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		// Create the first path (folder bottom part)
 		const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 		path1.setAttribute('d', 'M2.24983 9.39366L1.23786 13.2051C0.896659 14.4902 1.86546 15.7498 3.19504 15.7498H13.9144C14.8326 15.7498 15.636 15.1319 15.8716 14.2444L17.1087 9.58474C17.3362 8.72804 16.6903 7.88831 15.804 7.88831H4.20702C3.28878 7.88831 2.48547 8.50617 2.24983 9.39366Z');
-		path1.setAttribute('stroke', '#333940');
+		path1.setAttribute('style', 'stroke: var(--vscode-sideBarTitle-foreground)');
 		path1.setAttribute('stroke-width', '1.4');
 		path1.setAttribute('stroke-linecap', 'round');
 
 		// Create the second path (folder top part)
 		const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 		path2.setAttribute('d', 'M16.0826 7.67158V6.30801C16.0826 5.18964 15.1759 4.28301 14.0576 4.28301H8.67248C8.2211 4.28301 7.7996 4.05743 7.54922 3.68186L6.99532 2.85103C6.74495 2.47546 6.32344 2.24988 5.87206 2.24988H3.19785C2.07948 2.24988 1.17285 3.1565 1.17285 4.27488V13.771');
-		path2.setAttribute('stroke', '#333940');
+		path2.setAttribute('style', 'stroke: var(--vscode-sideBarTitle-foreground)');
 		path2.setAttribute('stroke-width', '1.4');
 		path2.setAttribute('stroke-linecap', 'round');
 
@@ -507,15 +507,14 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		svg.setAttribute('width', '14');
 		svg.setAttribute('height', '14');
 		svg.setAttribute('viewBox', '0 0 14 14');
-		svg.setAttribute('fill', '#333940');
-		svg.setAttribute('style', 'color:#9599A6');
+		svg.setAttribute('style', 'fill: var(--vscode-sideBarTitle-foreground)');
 
 		// Create the path for the git branch icon
 		const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 		path.setAttribute('fill-rule', 'evenodd');
 		path.setAttribute('clip-rule', 'evenodd');
 		path.setAttribute('d', 'M4.22929 3.88849L4.08366 3.97273V7.58362L4.5505 7.23298C5.23291 6.72037 6.08076 6.41675 7.00033 6.41675C8.38253 6.41675 9.53955 5.45553 9.84069 4.1654L9.8875 3.96482L9.71417 3.85361C9.30925 3.59385 9.04199 3.1406 9.04199 2.62508C9.04199 1.81967 9.69492 1.16675 10.5003 1.16675C11.3057 1.16675 11.9587 1.81967 11.9587 2.62508C11.9587 3.18179 11.6468 3.6661 11.1869 3.91206L11.0583 3.98086L11.0362 4.12501C10.7356 6.08346 9.04287 7.58341 7.00033 7.58341C5.61812 7.58341 4.4611 8.54463 4.15996 9.83476L4.11315 10.0353L4.28648 10.1466C4.6914 10.4063 4.95866 10.8596 4.95866 11.3751C4.95866 12.1805 4.30573 12.8334 3.50033 12.8334C2.69491 12.8334 2.04199 12.1805 2.04199 11.3751C2.04199 10.8357 2.33471 10.3643 2.77137 10.1117L2.91699 10.0274V3.97273L2.77137 3.88849C2.33471 3.63591 2.04199 3.16449 2.04199 2.62508C2.04199 1.81967 2.69491 1.16675 3.50033 1.16675C4.30573 1.16675 4.95866 1.81967 4.95866 2.62508C4.95866 3.16449 4.66594 3.63591 4.22929 3.88849Z');
-		path.setAttribute('fill', '#333940');
+		path.setAttribute('style', 'fill: var(--vscode-sideBarTitle-foreground)');
 
 		// Add path to SVG
 		svg.appendChild(path);

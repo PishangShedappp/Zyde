@@ -1,0 +1,34 @@
+{
+  "name": "theme-defaults",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "categories": [
+    "Themes"
+  ],
+  "version": "1.0.0",
+  "publisher": "vscode",
+  "license": "MIT",
+  "engines": {
+    "vscode": "*"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "id": "Default Dark",
+        "label": "Zyde Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/dark_modern.json"
+      },
+      {
+        "id": "Default Light",
+        "label": "Zyde Light",
+        "uiTheme": "vs",
+        "path": "./themes/light_modern.json"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/vscode.git"
+  }
+}

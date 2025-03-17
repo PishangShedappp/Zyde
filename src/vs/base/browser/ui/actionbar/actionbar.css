@@ -3,6 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+.action-label.codicon {
+    color: inherit !important;
+}
+
 .monaco-action-bar {
 	white-space: nowrap;
 	height: 100%;
@@ -23,6 +27,10 @@
 
 .monaco-action-bar .action-item {
 	display: block;
+}
+
+.monaco-action-bar .action-item {
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
@@ -50,6 +58,15 @@
 	font-size: 11px;
 	padding: 3px;
 	border-radius: 5px;
+}
+
+.monaco-workbench .pane-composite-part > .zyde.title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item .action-label {
+	line-height: 20px;
+	padding: 0;
+}
+
+.monaco-workbench.zyde-style .pane-composite-part > .title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item .action-label {
+	font-size: 13px;
 }
 
 .monaco-action-bar .action-item.disabled .action-label:not(.icon) ,
@@ -121,4 +138,32 @@
 
 .monaco-action-bar .action-item.action-dropdown-item > .action-dropdown-item-separator > div {
 	width: 1px;
+}
+
+.monaco-workbench .pane-composite-part > .zyde.title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item {
+	font-size: 13px;
+	padding: 4px 12px;
+	margin-right: 4px;
+	border-radius: 4px;
+}
+
+.monaco-workbench.zyde-style .pane-composite-part > .title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item {
+	font-weight: 400;
+	letter-spacing: 0.04px;
+	text-transform: none;
+}
+
+.monaco-workbench.zyde-style .pane-composite-part > .title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item.checked {
+	background-color: var(--vscode-tab-activeBackground);
+}
+
+.monaco-workbench.zyde-style .pane-composite-part > .title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item .action-label:hover {
+	background-color: transparent !important;
+}
+
+.monaco-workbench.zyde-style .pane-composite-part > .title > .composite-bar-container .composite-bar > .monaco-action-bar .action-item .badge .badge-content {
+	margin-left: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	border-radius: 100%;
 }

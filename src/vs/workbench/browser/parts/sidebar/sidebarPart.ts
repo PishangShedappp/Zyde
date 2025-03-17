@@ -39,7 +39,7 @@ export class SidebarPart extends AbstractPaneCompositePart {
 
 	//#region IView
 
-	readonly minimumWidth: number = 170;
+	readonly minimumWidth: number = 220;
 	readonly maximumWidth: number = Number.POSITIVE_INFINITY;
 	readonly minimumHeight: number = 0;
 	readonly maximumHeight: number = Number.POSITIVE_INFINITY;
@@ -148,7 +148,7 @@ export class SidebarPart extends AbstractPaneCompositePart {
 		container.style.borderLeftWidth = borderColor && !isPositionLeft ? '1px' : '';
 		container.style.borderLeftStyle = borderColor && !isPositionLeft ? 'solid' : '';
 		container.style.borderLeftColor = !isPositionLeft ? borderColor || '' : '';
-		container.style.outlineColor = this.getColor(SIDE_BAR_DRAG_AND_DROP_BACKGROUND) ?? '';
+		container.style.margin = '0px 0px 0px 6px';
 	}
 
 	override layout(width: number, height: number, top: number, left: number): void {

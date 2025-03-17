@@ -122,10 +122,11 @@ export class PanelPart extends AbstractPaneCompositePart {
 		container.style.borderLeftColor = borderColor;
 		container.style.borderRightColor = borderColor;
 		container.style.borderBottomColor = borderColor;
+		container.style.margin = '0 6px 6px';
 
 		const title = this.getTitleArea();
 		if (title) {
-			title.style.borderTopColor = this.getColor(PANEL_BORDER) || this.getColor(contrastBorder) || '';
+			title.classList.add('zyde');
 		}
 	}
 

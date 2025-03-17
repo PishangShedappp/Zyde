@@ -283,7 +283,12 @@ export class CompositeBar extends Widget implements ICompositeBar {
 	}
 
 	create(parent: HTMLElement): HTMLElement {
-		const actionBarDiv = parent.appendChild($('.composite-bar'));
+		const compositeBarWrapper = document.createElement('div');
+		compositeBarWrapper.classList.add('composite-bar-wrapper'); // Add wrapper class
+
+		const actionBarDiv = $('.composite-bar');
+		compositeBarWrapper.appendChild(actionBarDiv);
+		parent.appendChild(compositeBarWrapper); // Append wrapper instead of composite-bar
 		this.compositeSwitcherBar = this._register(new ActionBar(actionBarDiv, {
 			actionViewItemProvider: (action, options) => {
 				if (action instanceof CompositeOverflowActivityAction) {

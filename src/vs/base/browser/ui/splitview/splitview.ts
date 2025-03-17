@@ -308,7 +308,7 @@ class HorizontalViewItem<TLayoutContext, TView extends IView<TLayoutContext>> ex
 
 	layoutContainer(offset: number): void {
 		this.container.style.left = `${offset}px`;
-		this.container.style.width = `38px`;
+		this.container.style.width = `${this.size}px`;
 	}
 }
 

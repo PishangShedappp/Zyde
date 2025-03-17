@@ -49,8 +49,8 @@ export class ActivitybarPart extends Part {
 
 	//#region IView
 
-	readonly minimumWidth: number = 48;
-	readonly maximumWidth: number = 48;
+	readonly minimumWidth: number = 38;
+	readonly maximumWidth: number = 38;
 	readonly minimumHeight: number = 0;
 	readonly maximumHeight: number = Number.POSITIVE_INFINITY;
 
@@ -136,6 +136,8 @@ export class ActivitybarPart extends Part {
 		const borderColor = this.getColor(ACTIVITY_BAR_BORDER) || this.getColor(contrastBorder) || '';
 		container.classList.toggle('bordered', !!borderColor);
 		container.style.borderColor = borderColor ? borderColor : '';
+
+		container.style.boxSizing = 'content-box';
 	}
 
 	show(focus?: boolean): void {
@@ -288,7 +290,6 @@ export class ActivityBarCompositeBar extends PaneCompositeBar {
 		// Menubar: install a custom menu bar depending on configuration
 		this.menuBar = this._register(this.instantiationService.createInstance(CustomMenubarControl));
 		this.menuBar.create(this.menuBarContainer);
-
 	}
 
 	private registerKeyboardNavigationListeners(): void {

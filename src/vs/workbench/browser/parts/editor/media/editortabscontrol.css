@@ -9,6 +9,21 @@
 	cursor: pointer;
 }
 
+.monaco-workbench .part.editor > .content .editor-group-container > .title.title {
+	border-bottom-width: 1px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container > .title.tabs {
+	border-bottom: 1px solid var(--vscode-editorGroup-border);
+	padding: 7px;
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container > .title.tabs > .breadcrumbs-below-tabs {
+	padding-top: calc(var(--editor-group-tab-height) - 21px);
+}
+
 .monaco-workbench .part.editor > .content .editor-group-container > .title .title-label,
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab .tab-label {
 	white-space: nowrap !important;

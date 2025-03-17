@@ -317,6 +317,8 @@ export abstract class CompositePart<T extends Composite> extends Part {
 		else {
 			this.mapActionsBindingToComposite.delete(compositeId);
 		}
+
+		this.getTitleArea()?.setAttribute('view-container-id', compositeId);
 	}
 
 	private updateTitle(compositeId: string, compositeTitle?: string): void {
@@ -335,6 +337,8 @@ export abstract class CompositePart<T extends Composite> extends Part {
 
 		const toolBar = assertIsDefined(this.toolBar);
 		toolBar.setAriaLabel(localize('ariaCompositeToolbarLabel', "{0} actions", compositeTitle));
+
+		this.getTitleArea()?.setAttribute('view-container-id', compositeId);
 	}
 
 	private collectCompositeActions(composite?: Composite): () => void {
@@ -392,7 +396,6 @@ export abstract class CompositePart<T extends Composite> extends Part {
 	}
 
 	protected override createTitleArea(parent: HTMLElement): HTMLElement {
-
 		// Title Area Container
 		const titleArea = append(parent, $('.composite'));
 		titleArea.classList.add('title');

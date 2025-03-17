@@ -29,6 +29,18 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
 	registry.registerConfiguration({
 		...workbenchConfigurationNodeBase,
 		'properties': {
+			'workbench.colorTheme': {
+				'type': 'string',
+				'description': localize('colorTheme', "Specifies the color theme used in the workbench."),
+				'default': 'Default Light',
+				'scope': ConfigurationScope.APPLICATION
+			},
+			'workbench.iconTheme': {
+				type: 'string',
+				default: 'Default Light Zyde Icon',
+				description: localize('iconTheme', "Specifies the icon theme used in the workbench."),
+				scope: ConfigurationScope.APPLICATION
+			},
 			'workbench.externalBrowser': {
 				type: 'string',
 				markdownDescription: localize('browser', "Configure the browser to use for opening http or https links externally. This can either be the name of the browser (`edge`, `chrome`, `firefox`) or an absolute path to the browser's executable. Will use the system default if not set."),

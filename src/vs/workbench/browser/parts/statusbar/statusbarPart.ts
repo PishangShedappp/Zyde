@@ -118,7 +118,7 @@ interface IPendingStatusbarEntry {
 
 class StatusbarPart extends Part implements IStatusbarEntryContainer {
 
-	static readonly HEIGHT = 22;
+	static readonly HEIGHT = 24;
 
 	//#region IView
 

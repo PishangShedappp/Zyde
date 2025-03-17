@@ -80,7 +80,7 @@ export class CoordinatesRelativeToEditor {
 
 export function createEditorPagePosition(editorViewDomNode: HTMLElement): EditorPagePosition {
 	const editorPos = dom.getDomNodePagePosition(editorViewDomNode);
-	return new EditorPagePosition(editorPos.left, editorPos.top, editorPos.width, editorPos.height);
+	return new EditorPagePosition(editorPos.left, editorPos.top, editorPos.width - 14, editorPos.height - 28);
 }
 
 export function createCoordinatesRelativeToEditor(editorViewDomNode: HTMLElement, editorPagePosition: EditorPagePosition, pos: PageCoordinates) {

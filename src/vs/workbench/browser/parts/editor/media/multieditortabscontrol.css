@@ -40,6 +40,9 @@
 */
 
 /* Tabs and Actions Container */
+.monaco-workbench.zyde-simple .part.editor > .content .editor-group-container > .title > .tabs-and-actions-container {
+	margin-left: 1px;
+}
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title > .tabs-and-actions-container {
 	display: flex;
@@ -79,6 +82,10 @@
 	scrollbar-width: none; /* Firefox: hide scrollbar */
 }
 
+.monaco-workbench.zyde-style .part.editor > .content .editor-group-container > .title .tabs-container {
+	gap: 4px;
+}
+
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container.scroll {
 	overflow: scroll !important;
 }
@@ -103,7 +110,7 @@
 	cursor: pointer;
 	height: var(--editor-group-tab-height);
 	box-sizing: border-box;
-	padding-left: 10px;
+	padding-left: 12px;
 }
 
 /* Tab Background Color in/active group/tab */
@@ -162,6 +169,18 @@
 	width: 120px;
 	min-width: fit-content;
 	flex-shrink: 0;
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab.sizing-fit {
+	width: auto !important;
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container.active > .title .tabs-container > .tab {
+	border-radius: 4px;
+}
+
+.monaco-workbench.zyde-style .part.editor > .content .editor-group-container.active > .title .tabs-container > .tab {
+	padding-right: 6px;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab.sizing-fixed {
@@ -386,7 +405,7 @@
 	 * fully without clipping in case the parent container has `overflow: hidden`
 	 * and/or `flex: none`. We added those styles to fix other issues so a pragmatic
 	 * solution is to give the label container a bit more room to fully render.
-	 * 
+	 *
 	 * Refs: https://github.com/microsoft/vscode/issues/207409
 	 */
 	padding-right: 1px;
@@ -501,7 +520,7 @@
 .monaco-workbench .part.editor > .content .editor-group-container > .title .editor-actions {
 	cursor: default;
 	flex: initial;
-	padding: 0 8px 0 4px;
+	padding: 0 0 0 4px;
 	height: var(--editor-group-tab-height);
 }
 

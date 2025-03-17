@@ -180,6 +180,8 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 
 			// Container
 			this.element.classList.add(...coalesce(['editor-group-container', this.model.isLocked ? 'locked' : undefined]));
+			this.element.style.marginLeft = '6px';
+			this.element.style.marginRight = '6px';
 
 			// Container listeners
 			this.registerContainerListeners();
@@ -2181,7 +2183,7 @@ export class EditorGroupView extends Themable implements IEditorGroupView {
 
 		// Pass the container width and remaining height to the editor layout
 		const editorHeight = Math.max(0, height - titleControlSize.height);
-		this.editorContainer.style.height = `${editorHeight}px`;
+		this.editorContainer.style.height = `${editorHeight - 28}px`;
 		this.editorPane.layout({ width, height: editorHeight, top: top + titleControlSize.height, left });
 	}
 

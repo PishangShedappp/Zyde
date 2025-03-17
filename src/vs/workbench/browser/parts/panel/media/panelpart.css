@@ -3,6 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+.panel.basepanel {
+	height: calc(100% - 6px);
+}
+
 .monaco-workbench.nopanel .part.panel {
 	display: none !important;
 	visibility: hidden !important;
@@ -10,11 +14,29 @@
 
 .monaco-workbench .part.panel.bottom .composite.title {
 	border-top-width: 1px;
+	border-top-width: unset;
 	border-top-style: solid;
+	border-top-style: unset;
 }
 
 .monaco-workbench.nomaineditorarea .part.panel.bottom .composite.title {
 	border-top-width: 0; /* no border when main editor area is hiden */
+}
+
+.monaco-workbench .part.panel.bottom .content [id="terminal"] {
+	height: 100% !important;
+}
+
+.monaco-workbench .part.panel.bottom .content [id="~remote.forwardedPortsContainer"] {
+	height: calc(100% - 50px) !important;
+}
+
+.monaco-workbench .part.panel.bottom .content [id="workbench.panel.repl"] {
+	height: calc(100% - 50px) !important;
+}
+
+.monaco-workbench .part.panel.bottom .content [id="workbench.panel.markers"] {
+	height: calc(100% - 50px) !important;
 }
 
 .monaco-workbench .part.panel.top {

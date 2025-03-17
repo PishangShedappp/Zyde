@@ -35,6 +35,16 @@
 	overflow: hidden;
 }
 
+.zyde-style.monaco-workbench .part > .title {
+	padding: 8px;
+}
+
+.monaco-workbench .part > .zyde.title {
+	align-items: center;
+	height: 44px;
+	padding-right: 12px;
+}
+
 .monaco-workbench .part > .title {
 	padding-left: 8px;
 	padding-right: 8px;
@@ -45,16 +55,25 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	padding-left: 12px;
+}
+
+.monaco-workbench .part > .title > .title-label {
+	line-height: 30px;
 }
 
 .monaco-workbench .part > .title > .title-label {
 	padding-left: 12px;
 }
 
+.zyde-style.monaco-workbench .part > .title > .title-label {
+	padding-left: 0;
+}
+
 .monaco-workbench .part > .title > .title-label h2 {
 	font-size: 11px;
 	cursor: default;
-	font-weight: normal;
+	font-weight: 400;
 	margin: 0;
 	overflow: hidden;
 	white-space: nowrap;

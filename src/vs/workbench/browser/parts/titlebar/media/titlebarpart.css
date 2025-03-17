@@ -347,7 +347,7 @@
 
 .monaco-workbench .titlebar-left .menubar-menu-button .menubar-menu-title {
     border-radius: 4px;
-    color: var(--vscode-zyde-colorTextDefault);
+    color: var(--vscode-sideBarTitle-foreground);
     cursor: pointer;
     font-weight: 400;
     height: 28px;
@@ -436,6 +436,10 @@
 	border-radius: 4px;
 }
 
+.zyde-titlebar-info:hover {
+	background-color: var(--vscode-commandCenter-activeBackground);
+}
+
 .zyde-titlebar-info-icon-wrapper {
 	flex: 0 0 20px;
 	width: 20px;
@@ -472,13 +476,13 @@
 	min-width: 240px;
 	max-width: 480px;
 	height: auto;
-	background: var(--vscode-commandCenter-activeBackground);
+	background: var(--vscode-editor-background);
 	border-radius: 6px;
-	color: var(--vscode-zyde-colorTextDefault);
-	z-index: 100;
+	color: var(--vscode-editor-foreground);
+	z-index: 1001;
 	box-sizing: border-box;
-	box-shadow: var(--vscode-commandCenter-border, 0px 10px 50px rgba(0, 0, 0, 0.3));
-	border: 1px solid var(--vscode-commandCenter-inactiveBorder);
+	box-shadow: var(--vscode-menu-border, 0px 10px 50px rgba(0, 0, 0, 0.3));
+	border: 1px solid var(--vscode-menu-border);
 }
 
 .devspace-card.show {
@@ -500,7 +504,7 @@
 	display: flex;
 	flex-direction: column;
 	cursor: default;
-	box-shadow: var(--vscode-commandCenter-border, 0px 10px 50px rgba(0, 0, 0, 0.3));
+	box-shadow: var(--vscode-menu-border, 0px 10px 50px rgba(0, 0, 0, 0.3));
 }
 
 .project-list-container-empty-content {
@@ -516,7 +520,7 @@
 	padding: 8px;
 	display: flex;
 	flex-direction: column;
-	border-bottom: 1px solid var(--vscode-commandCenter-border);
+	border-bottom: 1px solid var(--vscode-titleBar-activeBackground);
 }
 
 .action-list .clone-repo-button:hover,
@@ -538,7 +542,7 @@
 	padding-left: 8px;
 	cursor: pointer;
 	box-sizing: border-box;
-	color: var(--vscode-zyde-colorTextDefault);
+	color: var(--vscode-sideBarTitle-foreground);
 	font-size: 13px;
 	background: transparent;
 }
@@ -565,7 +569,7 @@
 }
 
 .project-list-container .header .title {
-	color: var(--vscode-zyde-colorTextDefault);
+	color: var(--vscode-sideBarTitle-foreground);
 	font-size: 12px;
 	font-style: normal;
 	line-height: 18px;
@@ -630,7 +634,7 @@
 }
 
 .project-name {
-	color: var(--vscode-zyde-colorTextDefault);
+	color: var(--vscode-sideBarTitle-foreground);
 	font-size: 13px;
 	font-style: normal;
 	font-weight: 400;
@@ -646,7 +650,7 @@
 
 .project-path {
 	margin-top: 2px;
-	color: var(--vscode-zyde-colorTextDefault);
+	color: var(--vscode-sideBarTitle-foreground);
 	font-size: 11px;
 	font-style: normal;
 	font-weight: 400;
@@ -703,7 +707,7 @@
 }
 
 .monaco-workbench .zyde-command-center-button-icon {
-	color: var(--vscode-zyde-colorTextDefault);
+	color: var(--vscode-sideBarTitle-foreground);
 	font-size: 12px;
 	font-weight: 500;
 }
@@ -726,7 +730,7 @@
 }
 
 .monaco-workbench .zyde-command-center-button-text {
-	color: var(--vscode-zyde-colorTextDefault);
+	color: var(--vscode-sideBarTitle-foreground);
 	font-size: 13px;
 	font-weight: 400;
 	margin-left: 6px;

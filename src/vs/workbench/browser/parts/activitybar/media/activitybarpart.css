@@ -4,8 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 
 .monaco-workbench .part.activitybar {
-	width: 48px;
 	height: 100%;
+	width: 100%;
+}
+
+.monaco-workbench .part.activitybar,
+.monaco-workbench .part.part.statusBar {
+	border-radius: 0;
 }
 
 .monaco-workbench .activitybar.bordered::before {
@@ -30,26 +35,41 @@
 	border-left-width: 1px;
 }
 
+.monaco-workbench .part > .content {
+	font-size: 13px;
+}
+
 .monaco-workbench .activitybar > .content {
-	height: 100%;
+	align-items: center;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	height: 100%;
+	justify-content: unset;
+	margin: 0 auto;
+}
+
+.monaco-workbench .activitybar.left > .content {
+	align-items: flex-end;
+}
+
+.monaco-workbench .activitybar .composite-bar {
+	min-width: 32px;
+}
+
+.monaco-workbench .activitybar > .content .composite-bar {
+	margin-bottom: unset;
+	width: 100%;
 }
 
 /** Viewlet Switcher */
-
 .monaco-workbench .activitybar > .content .monaco-action-bar {
-	text-align: left;
 	background-color: inherit;
+	text-align: left;
+	width: 100%;
 }
 
 .monaco-workbench .activitybar .action-item:focus {
 	outline: 0 !important; /* activity bar indicates focus custom */
-}
-
-.monaco-workbench .activitybar > .content > .composite-bar {
-	margin-bottom: auto;
 }
 
 /** Menu Bar */

@@ -3,6 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+.split-view-view.visible {
+	overflow: hidden;
+}
+
 .monaco-split-view2 {
 	position: relative;
 	width: 100%;
@@ -33,7 +37,7 @@
 }
 
 .monaco-split-view2 > .monaco-scrollable-element > .split-view-container > .split-view-view {
-	white-space: initial;
+	white-space: normal;
 	position: absolute;
 }
 

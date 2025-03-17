@@ -3,6 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+.monaco-workbench .part.part {
+	border-radius: 6px;
+}
+
 .monaco-workbench.nosidebar > .part.sidebar {
 	display: none !important;
 	visibility: hidden !important;
@@ -20,7 +24,7 @@
 	background-color: var(--vscode-sideBarTitle-background);
 }
 
-.monaco-workbench .part.sidebar > .title > .title-label h2 {
+.monaco-workbench .sidebar > .title > .title-label h2 {
 	text-transform: uppercase;
 }
 

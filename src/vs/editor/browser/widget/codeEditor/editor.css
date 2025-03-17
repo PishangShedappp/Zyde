@@ -24,6 +24,10 @@
 	color: var(--vscode-editor-foreground);
 	background-color: var(--vscode-editor-background);
 	overflow-wrap: initial;
+	height: calc(100%) !important;
+	width: calc(100%) !important;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 }
 .monaco-editor-background {
 	background-color: var(--vscode-editor-background);
@@ -60,6 +64,11 @@
 	overflow: hidden;
 }
 
+.monaco-editor .overflow-guard {
+	height: 100% !important;
+	width: 100% !important;
+}
+
 .monaco-editor .view-overlays {
 	position: absolute;
 	top: 0;
@@ -68,6 +77,11 @@
 .monaco-editor .view-overlays > div, .monaco-editor .margin-view-overlays > div {
 	position: absolute;
 	width: 100%;
+}
+
+.monaco-editor .monaco-scrollable-element {
+	width: calc(100% - 14px) !important;
+	border-bottom-right-radius: 6px;
 }
 
 /*

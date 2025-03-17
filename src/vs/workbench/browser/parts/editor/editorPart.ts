@@ -170,6 +170,8 @@ export class EditorPart extends Part implements IEditorPart, IEditorGroupsView {
 	) {
 		super(id, { hasTitle: false }, themeService, storageService, layoutService);
 
+		this._partOptions = getEditorPartOptions(this.configurationService, this.themeService);
+
 		this.registerListeners();
 	}
 
@@ -200,7 +202,7 @@ export class EditorPart extends Part implements IEditorPart, IEditorGroupsView {
 
 	private enforcedPartOptions: DeepPartial<IEditorPartOptions>[] = [];
 
-	private _partOptions = getEditorPartOptions(this.configurationService, this.themeService);
+	private _partOptions: IEditorPartOptions;
 	get partOptions(): IEditorPartOptions { return this._partOptions; }
 
 	enforcePartOptions(options: DeepPartial<IEditorPartOptions>): IDisposable {
@@ -982,7 +984,7 @@ export class EditorPart extends Part implements IEditorPart, IEditorGroupsView {
 
 	override updateStyles(): void {
 		const container = assertIsDefined(this.container);
-		container.style.backgroundColor = this.getColor(editorBackground) || '';
+		container.style.backgroundColor = 'transparent';
 
 		const separatorBorderStyle = { separatorBorder: this.gridSeparatorBorder, background: this.theme.getColor(EDITOR_PANE_BACKGROUND) || Color.transparent };
 		this.gridWidget.style(separatorBorderStyle);

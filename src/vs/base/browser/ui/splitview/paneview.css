@@ -151,3 +151,35 @@
 #monaco-pane-drop-overlay > .pane-overlay-indicator.overlay-move-transition {
 	transition: top 70ms ease-out, left 70ms ease-out, width 70ms ease-out, height 70ms ease-out, opacity 150ms ease-out;
 }
+
+
+.zyde-style .auxiliarybar .monaco-pane-view .pane > .pane-header,
+.zyde-style .panel .monaco-pane-view .pane > .pane-header,
+.zyde-style .sidebar .monaco-pane-view .pane > .pane-header {
+	padding: 0 8px 0 12px;
+}
+
+.zyde-style .auxiliarybar .monaco-pane-view .pane > .pane-header,
+.zyde-style .sidebar .monaco-pane-view .pane > .pane-header {
+	border-top: 1px solid transparent !important;
+}
+
+#workbench\.view\.explorer .pane-header {
+	height: auto;
+}
+
+#workbench\.view\.explorer .split-view-container .split-view-view:first-child .pane-header {
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+#workbench\.view\.explorer .split-view-container .split-view-view:last-child .pane-header {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+
+.zyde-style.monaco-workbench .auxiliarybar .pane-header .twisty-container.codicon,
+.zyde-style.monaco-workbench .panel .pane-header .twisty-container.codicon,
+.zyded-style.monaco-workbench .sidebar .pane-header .twisty-container.codicon {
+	font-size: 14px;
+}

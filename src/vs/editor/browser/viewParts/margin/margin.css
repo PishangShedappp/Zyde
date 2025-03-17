@@ -4,5 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 .monaco-editor .margin {
+	height: calc(100% - 26px) !important;
 	background-color: var(--vscode-editorGutter-background);
+	border-bottom-left-radius: 6px;
 }

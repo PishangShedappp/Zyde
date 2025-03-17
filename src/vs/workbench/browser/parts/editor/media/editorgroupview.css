@@ -4,9 +4,16 @@
  *--------------------------------------------------------------------------------------------*/
 
 /* Container */
+.monaco-workbench.zyde-style .part-editor > .content .editor-group-container.empty.empty {
+	background-color: var(--vscode-editor-background);
+	border-radius: 6px;
+	height: calc(100% - 6px);
+}
 
 .monaco-workbench .part.editor > .content .editor-group-container {
-	height: 100%;
+	height: calc(100% - 6px);
+	background-color: var(--vscode-editor-background);
+	border-radius: 6px;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container.empty  {
@@ -156,6 +163,11 @@
 }
 
 /* Editor */
+
+.monaco-workbench .part.editor > .content .editor-group-container > .editor-container {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
 
 .monaco-workbench .part.editor > .content .editor-group-container.empty > .editor-container  {
 	display: none;

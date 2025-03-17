@@ -264,15 +264,49 @@ class PartLayout {
 
 		let contentWidth = width;
 		if (this.options && typeof this.options.borderWidth === 'function') {
-			contentWidth -= this.options.borderWidth(); // adjust for border size
+			contentWidth -= 6; // adjust for border size
 		}
 
 		// Content Size: Width (Fill), Height (Variable)
-		const contentSize = new Dimension(contentWidth, height - titleSize.height - headerSize.height - footerSize.height);
+		const contentSize = new Dimension(contentWidth, height - headerSize.height - footerSize.height);
 
 		// Content
 		if (this.contentArea) {
-			size(this.contentArea, contentSize.width, contentSize.height);
+			const sidebarPart = this.contentArea.parentElement?.closest('.part.sidebar.left.pane-composite-part');
+			const editorPart = this.contentArea.parentElement?.closest('.part.editor');
+
+			// Get the `.composite.title` inside this sidebar
+			const titleArea = sidebarPart?.querySelector('.composite.title');
+
+			if (titleArea) {
+				// Function to update size when view-container-id is set
+				const updateSize = () => {
+					const containerId = titleArea.getAttribute('view-container-id');
+					if (containerId) {
+						console.log('Container ID Found:', containerId);
+						if (containerId !== 'workbench.view.explorer') {
+							if (this.contentArea) {
+								size(this.contentArea, contentSize.width, contentSize.height - 35 - 6);
+							}
+						} else {
+							if (this.contentArea) {
+								size(this.contentArea, contentSize.width, contentSize.height + titleSize.height - 35 - 6);
+							}
+						}
+					}
+				};
+
+				// Check if attribute already exists
+				updateSize();
+
+				// Watch for attribute changes
+				const observer = new MutationObserver(() => updateSize());
+				observer.observe(titleArea, { attributes: true, attributeFilter: ['view-container-id'] });
+			} else if (editorPart) {
+				size(this.contentArea, contentSize.width, contentSize.height - 6);
+			} else {
+				size(this.contentArea, contentSize.width, contentSize.height);
+			}
 		}
 
 		return { headerSize, titleSize, contentSize, footerSize };

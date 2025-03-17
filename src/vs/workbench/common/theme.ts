@@ -14,11 +14,7 @@ import { ColorScheme } from '../../platform/theme/common/theme.js';
 export function WORKBENCH_BACKGROUND(theme: IColorTheme): Color {
 	switch (theme.type) {
 		case ColorScheme.LIGHT:
-			return Color.fromHex('#F3F3F3');
-		case ColorScheme.HIGH_CONTRAST_LIGHT:
-			return Color.fromHex('#FFFFFF');
-		case ColorScheme.HIGH_CONTRAST_DARK:
-			return Color.fromHex('#000000');
+			return Color.fromHex('#F8F8F8');
 		default:
 			return Color.fromHex('#252526');
 	}
