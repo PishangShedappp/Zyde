@@ -91,11 +91,11 @@ jobs:
           echo "VSINSTALLDIR: %VSINSTALLDIR%"
         shell: cmd
 
-      - name: Configure NPM
+      - name: Create .npmrc file
         run: |
-          npm config set msvs_version 2022
-          npm config set python %PYTHON_PATH%
-          npm config list
+          echo "msvs_version=2022" > .npmrc
+          echo ".npmrc file created with contents:"
+          type .npmrc
         shell: cmd
 
       - name: Clean npm Cache
