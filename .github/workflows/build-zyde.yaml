@@ -34,78 +34,64 @@ jobs:
         with:
           python-version: '3.x'  # Required for node-gyp
 
-      - name: Install Visual Studio Build Tools
+      - name: Install Visual Studio Build Tools with Windows SDK
         run: |
-          # Download the Visual Studio installer bootstrapper
+          # Download VS installer
+          Write-Host "Downloading Visual Studio installer..."
           Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_buildtools.exe" -OutFile "$env:TEMP\vs_buildtools.exe"
 
-          # First install the core components
+          # Install VS Build Tools with complete set of components
+          Write-Host "Installing Visual Studio Build Tools with Windows SDK..."
           Start-Process -FilePath "$env:TEMP\vs_buildtools.exe" -ArgumentList @(
             "--quiet",
             "--wait",
             "--norestart",
+            "--nocache",
             "--installPath", """C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools""",
             "--add", "Microsoft.VisualStudio.Workload.VCTools",
             "--add", "Microsoft.VisualStudio.Workload.NativeDesktop",
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
-            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.22621",
+            "--add", "Microsoft.VisualStudio.Component.VC.CoreIde",
+            "--add", "Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
+            "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project",
             "--add", "Microsoft.VisualStudio.Component.VC.ATL",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC"
-          ) -NoNewWindow -Wait
-
-          # Then install specific Spectre-mitigated libraries
-          Start-Process -FilePath "$env:TEMP\vs_buildtools.exe" -ArgumentList @(
-            "--quiet",
-            "--wait",
-            "--norestart",
-            "--installPath", """C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools""",
-            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC",
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre",
             "--add", "Microsoft.VisualStudio.Component.VC.MFC.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATL.Spectre"
+            "--add", "Microsoft.VisualStudio.Component.VC.ATL.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.Windows10SDK",
+            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.19041",
+            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.20348",
+            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22000",
+            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22621"
           ) -NoNewWindow -Wait
 
           Write-Host "Visual Studio installation completed."
         shell: pwsh
 
-      - name: List Available Visual Studio Components and Versions
+      - name: Verify Visual Studio Installation
         run: |
-          Write-Host "⚙️ Checking VS Installation Directory..."
-          $vsInstallPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
-          Write-Host "VS Install Path: $vsInstallPath"
+          Write-Host "Verifying Visual Studio installation..."
+          $vswhereOutput = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          Write-Host "VS Installation Path: $vswhereOutput"
 
-          Write-Host "⚙️ Checking installed VS components..."
-          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -format json | ConvertFrom-Json | Format-List
-
-          Write-Host "⚙️ Checking MSVC Tools directory..."
-          $msvcDir = Join-Path $vsInstallPath "VC\Tools\MSVC\"
-          if (Test-Path $msvcDir) {
-            $msvcVersions = Get-ChildItem $msvcDir -Directory
-            Write-Host "Found MSVC versions: $($msvcVersions.Name -join ', ')"
-
-            $latestMsvcVersion = $msvcVersions | Sort-Object -Property Name -Descending | Select-Object -First 1
-            Write-Host "Latest MSVC version: $($latestMsvcVersion.Name)"
-
-            # Check for Spectre libraries in the latest version
-            $spectrePath = Join-Path $latestMsvcVersion.FullName "lib\x64\spectre"
-            if (Test-Path $spectrePath) {
-              Write-Host "✅ Spectre libraries found at: $spectrePath"
-              Get-ChildItem $spectrePath -File | Select-Object -First 5 | ForEach-Object { Write-Host "  - $($_.Name)" }
-            } else {
-              Write-Host "❌ Spectre libraries NOT found at expected path: $spectrePath"
-
-              # Let's look for any spectre directory
-              $anySpectre = Get-ChildItem -Path (Join-Path $msvcDir "*\lib\*\spectre") -Directory -ErrorAction SilentlyContinue
-              if ($anySpectre) {
-                Write-Host "Found Spectre libraries in alternative locations:"
-                $anySpectre | ForEach-Object { Write-Host "  - $($_.FullName)" }
-              } else {
-                Write-Host "No Spectre libraries found in any location."
-              }
-            }
+          # Check for Windows SDK
+          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\bin"
+          if (Test-Path $sdkPath) {
+            Write-Host "Windows SDK found at: $sdkPath"
+            Get-ChildItem $sdkPath -Directory | ForEach-Object { Write-Host "  - $($_.Name)" }
           } else {
-            Write-Host "❌ MSVC Tools directory not found at expected location: $msvcDir"
+            Write-Host "Windows SDK not found at $sdkPath"
+          }
+
+          # Check for MSVC
+          $msvcPath = Join-Path $vswhereOutput "VC\Tools\MSVC"
+          if (Test-Path $msvcPath) {
+            Write-Host "MSVC found at: $msvcPath"
+            Get-ChildItem $msvcPath -Directory | ForEach-Object { Write-Host "  - $($_.Name)" }
+          } else {
+            Write-Host "MSVC not found at $msvcPath"
           }
         shell: pwsh
 
@@ -115,9 +101,11 @@ jobs:
           vsversion: '2022'
           arch: 'x64'
 
-      - name: Create .npmrc file
+      - name: Create Global .npmrc
         run: |
+          echo "Creating global .npmrc file..."
           echo "msvs_version=2022" > %USERPROFILE%\.npmrc
+          echo "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" > %USERPROFILE%\.vs-location
           type %USERPROFILE%\.npmrc
         shell: cmd
 
@@ -127,11 +115,15 @@ jobs:
 
       - name: Install Required Dependencies
         run: |
+          set npm_config_msvs_version=2022
+          set npm_config_vs_location=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools
           npm install
         shell: cmd
 
       - name: Build VS Code (Windows x64)
         run: |
+          set npm_config_msvs_version=2022
+          set npm_config_vs_location=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools
           set VSCODE_ARCH=x64
           npm run gulp vscode-win32-x64
         shell: cmd
