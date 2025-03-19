@@ -21,95 +21,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Full history for proper version detection
+          fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'  # Required for node-gyp
-
-      - name: Install Visual Studio Build Tools with Windows SDK
-        run: |
-          # Download VS installer
-          Write-Host "Downloading Visual Studio installer..."
-          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_buildtools.exe" -OutFile "$env:TEMP\vs_buildtools.exe"
-
-          # Install VS Build Tools with complete set of components
-          Write-Host "Installing Visual Studio Build Tools with Windows SDK..."
-          Start-Process -FilePath "$env:TEMP\vs_buildtools.exe" -ArgumentList @(
-            "--quiet",
-            "--wait",
-            "--norestart",
-            "--nocache",
-            "--installPath", """C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools""",
-            "--add", "Microsoft.VisualStudio.Workload.VCTools",
-            "--add", "Microsoft.VisualStudio.Workload.NativeDesktop",
-            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
-            "--add", "Microsoft.VisualStudio.Component.VC.CoreIde",
-            "--add", "Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
-            "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATL",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC",
-            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.MFC.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATL.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.Windows10SDK",
-            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.19041",
-            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.20348",
-            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22000",
-            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22621",
-            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre"
-          ) -NoNewWindow -Wait
-
-          Write-Host "Visual Studio installation completed."
-        shell: pwsh
-
-      - name: Verify Visual Studio Installation
-        run: |
-          Write-Host "Verifying Visual Studio installation..."
-          $vswhereOutput = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-          Write-Host "VS Installation Path: $vswhereOutput"
-
-          # Check for Windows SDK
-          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\bin"
-          if (Test-Path $sdkPath) {
-            Write-Host "Windows SDK found at: $sdkPath"
-            Get-ChildItem $sdkPath -Directory | ForEach-Object { Write-Host "  - $($_.Name)" }
-          } else {
-            Write-Host "Windows SDK not found at $sdkPath"
-          }
-
-          # Check for MSVC
-          $msvcPath = Join-Path $vswhereOutput "VC\Tools\MSVC"
-          if (Test-Path $msvcPath) {
-            Write-Host "MSVC found at: $msvcPath"
-            Get-ChildItem $msvcPath -Directory | ForEach-Object { Write-Host "  - $($_.Name)" }
-          } else {
-            Write-Host "MSVC not found at $msvcPath"
-          }
-        shell: pwsh
-
-      - name: Set up Visual Studio Environment
+      - name: Setup Visual Studio
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          vsversion: '2022'
-          arch: 'x64'
+          vsversion: "2022"
+          arch: "x64"
 
-      - name: Create Global .npmrc
+      - name: Install Spectre-Mitigated Libraries
         run: |
-          echo "Creating global .npmrc file..."
-          echo "msvs_version=2022" > %USERPROFILE%\.npmrc
-          echo "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" > %USERPROFILE%\.vs-location
-          type %USERPROFILE%\.npmrc
-        shell: cmd
+          choco install visualstudio2022buildtools --params "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64.Spectre"
+        shell: pwsh
 
       - name: Clean npm Cache
         run: npm cache clean --force
@@ -118,14 +44,11 @@ jobs:
       - name: Install Required Dependencies
         run: |
           set npm_config_msvs_version=2022
-          set npm_config_vs_location=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools
           npm install
         shell: cmd
 
       - name: Build VS Code (Windows x64)
         run: |
-          set npm_config_msvs_version=2022
-          set npm_config_vs_location=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools
           set VSCODE_ARCH=x64
           npm run gulp vscode-win32-x64
         shell: cmd
