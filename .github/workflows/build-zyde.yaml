@@ -23,29 +23,30 @@ jobs:
           node-version: 20.18.1
           cache: 'npm'
 
-      - name: Install VS Build Tools (C++ with Spectre-mitigated libs)
-        shell: pwsh
-        run: |
-          choco install -y visualstudio2022buildtools --package-parameters `
-            "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-            --add Microsoft.VisualStudio.Component.Windows10SDK.19041 `
-            --add Microsoft.VisualStudio.Component.Windows11SDK `
-            --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
-            --add Microsoft.VisualStudio.Component.VC.ATL.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.CoreBuildTools "
-
-      - name: Set Up MSBuild
-        uses: microsoft/setup-msbuild@v1
-
-      - name: Install Python 3 (Required for Windows Build)
+      - name: Install Python 3 (Required for node-gyp)
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
+      - name: Install VS Build Tools (C++ with Spectre-mitigated libs)
+        shell: pwsh
+        run: |
+          choco install -y visualstudio2022buildtools --package-parameters `
+            "--add Microsoft.VisualStudio.Workload.VCTools `
+            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+            --add Microsoft.VisualStudio.Component.VC.ATL.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
+            --add Microsoft.VisualStudio.Component.Windows11SDK.22621 "
+
+          npm config set msvs_version 2022
+
+      - name: Set Up MSBuild
+        uses: microsoft/setup-msbuild@v1
+
       - name: Install Dependencies
-        run: npm install 
+        run: npm install --legacy-peer-deps
 
       - name: Build Zyde
         run: npm run gulp vscode-win32-x64  # Modify if you changed the gulp task name
