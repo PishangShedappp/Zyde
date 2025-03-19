@@ -34,8 +34,7 @@ jobs:
 
       - name: Install Desktop Development with C++
         run: |
-          echo "Installing Desktop Development with C++..."
-          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
+          "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
           modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" `
           --add Microsoft.VisualStudio.Workload.NativeDesktop `
           --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
