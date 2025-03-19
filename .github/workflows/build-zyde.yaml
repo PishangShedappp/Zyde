@@ -67,6 +67,10 @@ jobs:
           npm run gulp vscode-win32-x64
         shell: cmd
 
+      - name: Debug: List Build Output
+        run: dir /s .build\
+        shell: cmd
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
