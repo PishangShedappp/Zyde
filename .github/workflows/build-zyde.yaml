@@ -23,18 +23,21 @@ jobs:
           node-version: 20.18.1
           cache: 'npm'
 
-      - name: Install VS Build Tools
-        uses: microsoft/setup-msbuild@v1
-
-      - name: Install MSVC Compiler & Windows SDK (with Spectre Libraries)
+      - name: Install VS Build Tools (C++ with Spectre-mitigated libs)
         shell: pwsh
         run: |
           choco install -y visualstudio2022buildtools --package-parameters `
             "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
             --add Microsoft.VisualStudio.Component.Windows10SDK.19041 `
+            --add Microsoft.VisualStudio.Component.Windows11SDK `
             --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
             --add Microsoft.VisualStudio.Component.VC.ATL.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre"
+            --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.CoreBuildTools "
+
+      - name: Set Up MSBuild
+        uses: microsoft/setup-msbuild@v1
 
       - name: Install Python 3 (Required for Windows Build)
         uses: actions/setup-python@v5
@@ -42,10 +45,10 @@ jobs:
           python-version: '3.x'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install 
 
       - name: Build Zyde
-        run: bun run gulp vscode-win32-x64  # Change this if you modified gulp task name
+        run: npm run gulp vscode-win32-x64  # Modify if you changed the gulp task name
 
       - name: Upload Zyde Artifacts
         uses: actions/upload-artifact@v4
