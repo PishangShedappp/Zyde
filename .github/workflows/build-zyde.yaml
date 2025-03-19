@@ -42,6 +42,7 @@ jobs:
         run: |
           choco install visualstudio2022buildtools --params `
             "--add Microsoft.VisualStudio.Workload.NativeDesktop `
+            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
             --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64.Spectre `
             --add Microsoft.VisualStudio.Component.VC.ATL.Spectre `
             --add Microsoft.VisualStudio.Component.VC.MFC.Spectre"
