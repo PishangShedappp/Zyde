@@ -32,16 +32,18 @@ jobs:
         with:
           python-version: '3.x'  # Required for node-gyp
 
-      - name: Install Spectre-Mitigated Libraries (MSVC v143)
+      - name: Install Visual Studio Build Tools (C++ Compiler, SDKs)
         run: |
-          echo "Installing Spectre-Mitigated Libraries..."
+          echo "Installing Full C++ Build Tools..."
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
           modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" `
+          --add Microsoft.VisualStudio.Component.VC.CoreBuildTools `
+          --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+          --add Microsoft.VisualStudio.Component.Windows10SDK.20348 `
           --add Microsoft.VisualStudio.Component.VC.ATL `
           --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
           --add Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre `
           --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
-          --add Microsoft.VisualStudio.Component.Windows10SDK.20348 `
           --quiet --wait --norestart
         shell: pwsh
 
