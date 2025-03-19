@@ -41,7 +41,7 @@ jobs:
             Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_buildtools.exe" -OutFile "$env:TEMP\vs_buildtools.exe"
           }
 
-          # Install Build Tools with all required components
+          # Install Build Tools with all required components including Spectre-mitigated libraries
           Start-Process -FilePath "$env:TEMP\vs_buildtools.exe" -ArgumentList @(
             "--quiet",
             "--wait",
@@ -56,7 +56,12 @@ jobs:
             "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC",
             "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project",
             "--add", "Microsoft.VisualStudio.Component.VC.CoreIde",
-            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22621"
+            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22621",
+            # Spectre-mitigated libraries (explicitly mentioned in error)
+            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATL.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.VC.MFC.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre"
           ) -NoNewWindow -Wait
         shell: pwsh
 
@@ -73,6 +78,15 @@ jobs:
             Write-Error "VC Tools directory not found at expected location: $msvcDir"
             exit 1
           }
+
+          # Verify Spectre-mitigated libraries
+          $spectreLib = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\*\lib\x64\spectre"
+          if (Test-Path $spectreLib) {
+            Write-Host "Spectre-mitigated libraries found at: $(Resolve-Path $spectreLib)"
+          } else {
+            Write-Error "Spectre-mitigated libraries not found at expected location: $spectreLib"
+            exit 1
+          }
         shell: pwsh
 
       - name: Set up Visual Studio Environment
@@ -80,6 +94,7 @@ jobs:
         with:
           vsversion: '2022'
           arch: 'x64'
+          spectre: true  # Enable Spectre mitigations
 
       - name: Diagnostic - Verify C++ Compiler
         run: |
@@ -103,11 +118,26 @@ jobs:
         shell: cmd
 
       - name: Install Required Dependencies
-        run: npm install
+        run: |
+          npm config set python %PYTHON%
+          npm install --no-optional
         shell: cmd
+        env:
+          PYTHON: ${{ env.pythonLocation }}\python.exe
+
+      - name: Install Gulp Globally
+        run: npm install -g gulp-cli
+        shell: cmd
+
+      - name: Compile in Development Mode First
+        run: |
+          npm run compile
+        shell: cmd
+        continue-on-error: true
 
       - name: Build VS Code (Windows x64)
         run: |
+          set VSCODE_ARCH=x64
           npm run gulp vscode-win32-x64
         shell: cmd
 
