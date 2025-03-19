@@ -16,7 +16,7 @@ export function WORKBENCH_BACKGROUND(theme: IColorTheme): Color {
 		case ColorScheme.LIGHT:
 			return Color.fromHex('#F8F8F8');
 		default:
-			return Color.fromHex('#252526');
+			return Color.fromHex('#181818');
 	}
 }
 

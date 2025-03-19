@@ -59,12 +59,12 @@
 
 /* -------------------- Misc -------------------- */
 
-.monaco-editor .overflow-guard {
+.editor-instance .monaco-editor .overflow-guard {
 	position: relative;
 	overflow: hidden;
 }
 
-.monaco-editor .overflow-guard {
+.editor-instance .monaco-editor .overflow-guard {
 	height: 100% !important;
 	width: 100% !important;
 }
