@@ -32,16 +32,17 @@ jobs:
         with:
           python-version: '3.x'  # Required for node-gyp
 
-      - name: Install Visual Studio Build Tools with Required Components
+      - name: Install Spectre-Mitigated Libraries (MSVC v143)
         run: |
-          choco install visualstudio2022buildtools --params `
-            "--add Microsoft.VisualStudio.Workload.VCTools `
-            --add Microsoft.VisualStudio.Component.VC.ATL `
-            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.Tools.x64.x86 `
-            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-            --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
-            --includeRecommended --quiet --norestart"
+          echo "Installing Spectre-Mitigated Libraries..."
+          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
+          modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" `
+          --add Microsoft.VisualStudio.Component.VC.ATL `
+          --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
+          --add Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre `
+          --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
+          --add Microsoft.VisualStudio.Component.Windows10SDK.20348 `
+          --quiet --wait --norestart
         shell: pwsh
 
       - name: Verify Installed Components
@@ -64,7 +65,8 @@ jobs:
 
       - name: Install Required Dependencies
         run: |
-          npm install
+          npm install -g node-gyp
+          npm install --no-optional
         shell: cmd
 
       - name: Build VS Code (Windows x64)
