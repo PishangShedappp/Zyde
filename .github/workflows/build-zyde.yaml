@@ -31,25 +31,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Setup Visual Studio Build Tools
-        uses: microsoft/setup-msbuild@v1.3
-        with:
-          vs-version: '17.0'
-          vs-prerelease: true
-
-      - name: Install Visual C++ components
+      - name: Install Visual C++ Build Tools
         run: |
-          # Using vs_buildtools.exe to install required components
-          Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe
-          Start-Process -FilePath vs_buildtools.exe -ArgumentList "--quiet --wait --norestart --nocache --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.ATL.Spectre --add Microsoft.VisualStudio.Component.VC.MFC.Spectre" -Wait
+          choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.ATL.Spectre --add Microsoft.VisualStudio.Component.VC.MFC.Spectre --add Microsoft.VisualStudio.Component.VC.ASAN --includeRecommended --includeOptional --passive --locale en-US"
+          # Set environment variables
+          echo "VCTargetsPath=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Microsoft\VC\v170\" >> $GITHUB_ENV
+          echo "VCToolsInstallDir=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.32.31326\" >> $GITHUB_ENV
 
-      - name: Configure Node.js for Visual Studio 2022
+      - name: Configure Node.js build environment
         run: |
-          # Create a .npmrc file with the correct VS version
           echo "msvs_version=2022" >> .npmrc
+          echo "GYP_MSVS_VERSION=2022" >> $GITHUB_ENV
+          echo "npm_config_msvs_version=2022" >> $GITHUB_ENV
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm config set python python3
+          npm install
 
       - name: Build VS Code for Windows (x64)
         run: |

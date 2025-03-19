@@ -7,7 +7,7 @@ import { IThemeService } from '../../../../platform/theme/common/themeService.js
 import { Part } from '../../part.js';
 import { Dimension, $, EventHelper, addDisposableGenericMouseDownListener, getWindow, isAncestorOfActiveElement, getActiveElement, isHTMLElement } from '../../../../base/browser/dom.js';
 import { Event, Emitter, Relay, PauseableEmitter } from '../../../../base/common/event.js';
-import { contrastBorder, editorBackground } from '../../../../platform/theme/common/colorRegistry.js';
+import { contrastBorder } from '../../../../platform/theme/common/colorRegistry.js';
 import { GroupDirection, GroupsArrangement, GroupOrientation, IMergeGroupOptions, MergeGroupMode, GroupsOrder, GroupLocation, IFindGroupScope, EditorGroupLayout, GroupLayoutArgument, IEditorSideGroup, IEditorDropTargetDelegate, IEditorPart } from '../../../services/editor/common/editorGroupsService.js';
 import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
 import { IView, orthogonal, LayoutPriority, IViewSize, Direction, SerializableGrid, Sizing, ISerializedGrid, ISerializedNode, Orientation, GridBranchNode, isGridBranchNode, GridNode, createSerializedGrid, Grid } from '../../../../base/browser/ui/grid/grid.js';
