@@ -14,17 +14,17 @@ on:
 
 jobs:
   build-windows:
-    name: Build VS Code for Windows (x64)
+    name: Build Zyde for Windows (x64)
     runs-on: windows-2022  # Uses Windows 2022 runner
 
     steps:
-      - name: Checkout VS Code Fork
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Ensure Node.js 20+
+          node-version: '20'
           cache: 'npm'
 
       - name: Setup Python
@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: '3.x'  # Required for node-gyp
 
-      - name: Install Desktop Development with C++
+      - name: Install Visual Studio Build Tools
         run: |
           $InstallerPath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
           Start-Process -FilePath $InstallerPath -ArgumentList @(
@@ -42,9 +42,14 @@ jobs:
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
             "--add", "Microsoft.VisualStudio.Component.Windows10SDK.20348",
             "--add", "Microsoft.VisualStudio.Component.VC.ATL",
+            "--add", "Microsoft.VisualStudio.Component.VC.MFC",
             "--add", "Microsoft.VisualStudio.Component.VC.MFC.Spectre",
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre",
             "--add", "Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
+            "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project",
+            "--add", "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset",
+            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.22621",
+            "--add", "Microsoft.VisualStudio.Component.VC.CoreIde",
             "--quiet", "--wait", "--norestart"
           ) -NoNewWindow -Wait
         shell: pwsh
@@ -52,7 +57,7 @@ jobs:
       - name: Verify Installed Components
         run: |
           "Checking Installed Components..."
-          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -format json | ConvertFrom-Json
+          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -format json | ConvertFrom-Json | Out-String
         shell: pwsh
 
       - name: Set up Visual Studio Environment
@@ -61,10 +66,9 @@ jobs:
           vsversion: '2022'
           arch: 'x64'
 
-      - name: Configure Build Environment
+      - name: Configure NPM for MSVC
         run: |
-          echo "GYP_MSVS_VERSION=2022" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "npm_config_msvs_version=2022" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "msvs_version=2022" > $env:USERPROFILE\.npmrc
         shell: pwsh
 
       - name: Clean npm Cache
