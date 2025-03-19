@@ -23,6 +23,9 @@ jobs:
           node-version: 20.18.1
           cache: 'npm'
 
+      - name: Install MSVC Compiler (Required for Windows Build)
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Install Dependencies
         run: npm install
 
