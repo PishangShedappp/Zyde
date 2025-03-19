@@ -1,4 +1,4 @@
-name: Build Zyde (Windows)
+name: Build VS Code (Windows)
 
 on:
   push:
@@ -32,16 +32,20 @@ jobs:
         with:
           python-version: '3.x'  # Required for node-gyp
 
-      - name: Install Visual Studio Build Tools
+      - name: Install Visual Studio Build Tools with Spectre-Mitigated Libraries
         run: |
-          choco install visualstudio2022buildtools --params "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --quiet --norestart"
+          choco install visualstudio2022buildtools --params `
+            "--add Microsoft.VisualStudio.Workload.VCTools `
+            --add Microsoft.VisualStudio.Component.VC.ATL `
+            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre `
+            --includeRecommended --quiet --norestart"
         shell: pwsh
 
-      - name: Install Required C++ Components
+      - name: Verify Installed Components
         run: |
-          choco install visualstudio2022-workload-vctools
-          choco install visualstudio2022-workload-windows
-          choco install visualstudio2022buildtools --params "--add Microsoft.VisualStudio.Component.VC.ATL Microsoft.VisualStudio.Component.VC.MFC.Spectre Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre"
+          "Checking Installed Components..."
+          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -format json | ConvertFrom-Json
         shell: pwsh
 
       - name: Set up Visual Studio Environment
