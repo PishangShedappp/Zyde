@@ -1,4 +1,4 @@
-name: Build VS Code (Windows)
+name: Build Zyde (Windows)
 
 on:
   push:
@@ -58,8 +58,7 @@ jobs:
 
       - name: Install Required Dependencies
         run: |
-          npm install -g node-gyp
-          npm install --no-optional
+          npm install
         shell: cmd
 
       - name: Build VS Code (Windows x64)
