@@ -32,12 +32,12 @@ jobs:
         with:
           python-version: '3.x'  # Required for node-gyp
 
-      - name: Install Visual Studio Build Tools (C++ Compiler, SDKs)
+      - name: Install Desktop Development with C++
         run: |
-          echo "Installing Full C++ Build Tools..."
+          echo "Installing Desktop Development with C++..."
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
           modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" `
-          --add Microsoft.VisualStudio.Component.VC.CoreBuildTools `
+          --add Microsoft.VisualStudio.Workload.NativeDesktop `
           --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
           --add Microsoft.VisualStudio.Component.Windows10SDK.20348 `
           --add Microsoft.VisualStudio.Component.VC.ATL `
