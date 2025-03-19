@@ -34,16 +34,19 @@ jobs:
 
       - name: Install Desktop Development with C++
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
-          modify --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools" `
-          --add Microsoft.VisualStudio.Workload.NativeDesktop `
-          --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-          --add Microsoft.VisualStudio.Component.Windows10SDK.20348 `
-          --add Microsoft.VisualStudio.Component.VC.ATL `
-          --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
-          --add Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre `
-          --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
-          --quiet --wait --norestart
+          $InstallerPath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
+          Start-Process -FilePath $InstallerPath -ArgumentList @(
+            "modify",
+            "--installPath", "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools",
+            "--add", "Microsoft.VisualStudio.Workload.NativeDesktop",
+            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
+            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.20348",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATL",
+            "--add", "Microsoft.VisualStudio.Component.VC.MFC.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre",
+            "--add", "Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
+            "--quiet", "--wait", "--norestart"
+          ) -NoNewWindow -Wait
         shell: pwsh
 
       - name: Verify Installed Components
