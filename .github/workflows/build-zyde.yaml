@@ -44,12 +44,12 @@ jobs:
           npm install --no-optional
         shell: cmd
 
-      - name: Configure Build Environment
+      - name: Configure Build Environment (Fixed)
         run: |
           echo "GYP_MSVS_VERSION=2022" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "npm_config_msvs_version=2022" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           npm config set msvs_version 2022
-        shell: cmd
+        shell: pwsh  # ✅ Use PowerShell instead of cmd
 
       - name: Build VS Code (Windows x64)
         run: npm run gulp vscode-win32-x64
