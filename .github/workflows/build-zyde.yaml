@@ -103,22 +103,11 @@ jobs:
         shell: cmd
 
       - name: Install Required Dependencies
-        run: npm install --no-optional
+        run: npm install
         shell: cmd
-
-      - name: Install Gulp Globally
-        run: npm install -g gulp-cli
-        shell: cmd
-
-      - name: Compile in Development Mode First
-        run: |
-          npm run compile
-        shell: cmd
-        continue-on-error: true
 
       - name: Build VS Code (Windows x64)
         run: |
-          set VSCODE_ARCH=x64
           npm run gulp vscode-win32-x64
         shell: cmd
 
