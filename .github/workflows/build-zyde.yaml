@@ -26,10 +26,15 @@ jobs:
       - name: Install VS Build Tools
         uses: microsoft/setup-msbuild@v1
 
-      - name: Install MSVC Compiler & Windows SDK
+      - name: Install MSVC Compiler & Windows SDK (with Spectre Libraries)
         shell: pwsh
         run: |
-          choco install -y visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041"
+          choco install -y visualstudio2022buildtools --package-parameters `
+            "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+            --add Microsoft.VisualStudio.Component.Windows10SDK.19041 `
+            --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
+            --add Microsoft.VisualStudio.Component.VC.ATL.Spectre `
+            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre"
 
       - name: Install Python 3 (Required for Windows Build)
         uses: actions/setup-python@v5
