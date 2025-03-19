@@ -85,7 +85,7 @@ function getExePath(buildPath) {
  * @returns {string}
  */
 function getLocalCLIPath() {
-	return process.platform === 'win32' ? path.join(VSCODE_FOLDER, 'scripts', 'code.bat') : path.join(VSCODE_FOLDER, 'scripts', 'code.sh');
+	return process.platform === 'win32' ? path.join(VSCODE_FOLDER, 'scripts', 'zyde.bat') : path.join(VSCODE_FOLDER, 'scripts', 'zyde.sh');
 }
 
 main();

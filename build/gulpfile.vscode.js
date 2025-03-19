@@ -369,7 +369,7 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
 		} else if (platform === 'linux') {
 			all = es.merge(all, gulp.src('resources/linux/code.png', { base: '.' }));
 		} else if (platform === 'darwin') {
-			const shortcut = gulp.src('resources/darwin/bin/code.sh')
+			const shortcut = gulp.src('resources/darwin/bin/zyde.sh')
 				.pipe(replace('@@APPNAME@@', product.applicationName))
 				.pipe(rename('bin/code'));
 
@@ -400,7 +400,7 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
 				.pipe(replace('@@NAME@@', product.nameShort))
 				.pipe(rename(function (f) { f.basename = product.applicationName; })));
 
-			result = es.merge(result, gulp.src('resources/win32/bin/code.sh', { base: 'resources/win32' })
+			result = es.merge(result, gulp.src('resources/win32/bin/zyde.sh', { base: 'resources/win32' })
 				.pipe(replace('@@NAME@@', product.nameShort))
 				.pipe(replace('@@PRODNAME@@', product.nameLong))
 				.pipe(replace('@@VERSION@@', version))
@@ -420,7 +420,7 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
 				result = es.merge(result, gulp.src('.build/win32/appx/**', { base: '.build/win32' }));
 			}
 		} else if (platform === 'linux') {
-			result = es.merge(result, gulp.src('resources/linux/bin/code.sh', { base: '.' })
+			result = es.merge(result, gulp.src('resources/linux/bin/zyde.sh', { base: '.' })
 				.pipe(replace('@@PRODNAME@@', product.nameLong))
 				.pipe(replace('@@APPNAME@@', product.applicationName))
 				.pipe(rename('bin/' + product.applicationName)));

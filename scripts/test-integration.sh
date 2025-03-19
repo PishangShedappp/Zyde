@@ -20,7 +20,7 @@ cd $ROOT
 # Figure out which Electron to use for running tests
 if [ -z "$INTEGRATION_TEST_ELECTRON_PATH" ]
 then
-	INTEGRATION_TEST_ELECTRON_PATH="./scripts/code.sh"
+	INTEGRATION_TEST_ELECTRON_PATH="./scripts/zyde.sh"
 
 	echo "Running integration tests out of sources."
 else
@@ -71,7 +71,7 @@ npm run test-extension -- -l vscode-colorize-tests
 kill_app
 
 echo
-echo "### Terminal Suggest tests" 
+echo "### Terminal Suggest tests"
 echo
 npm run test-extension -- -l terminal-suggest --enable-proposed-api=vscode.vscode-api-tests
 kill_app
