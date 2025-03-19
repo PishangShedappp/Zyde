@@ -45,7 +45,8 @@ jobs:
 
       - name: Configure Node.js for Visual Studio 2022
         run: |
-          npm config set msvs_version 2022
+          # Create a .npmrc file with the correct VS version
+          echo "msvs_version=2022" >> .npmrc
 
       - name: Install dependencies
         run: npm install
