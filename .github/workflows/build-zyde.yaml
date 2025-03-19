@@ -1,0 +1,37 @@
+name: Build Zyde
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Zyde
+        run: npm run gulp vscode-win32-x64  # Change this if you modified gulp task name
+
+      - name: Upload Zyde Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: zyde-win32-x64
+          path: .build/zyde-win32-x64
+          retention-days: 7
