@@ -46,9 +46,9 @@ jobs:
             --add Microsoft.VisualStudio.Component.VC.MFC.Spectre"
         shell: pwsh
 
-      - name: Set npm Configuration for MSBuild
-        run: npm config set msvs_version 2022
-        shell: cmd
+      - name: Set Environment Variable for MSBuild
+        run: echo "msvs_version=2022" >> $GITHUB_ENV
+        shell: bash
 
       - name: Clean npm Cache
         run: npm cache clean --force
@@ -56,7 +56,6 @@ jobs:
 
       - name: Install Required Dependencies
         run: |
-          set npm_config_msvs_version=2022
           npm install
         shell: cmd
 
