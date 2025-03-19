@@ -46,7 +46,6 @@ jobs:
 
       - name: Install Required Dependencies
         run: |
-          npm install -g node-gyp
           npm install
         shell: cmd
 
