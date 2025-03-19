@@ -23,14 +23,27 @@ jobs:
           node-version: 20.18.1
           cache: 'npm'
 
-      - name: Install MSVC Compiler (Required for Windows Build)
-        uses: ilammy/msvc-dev-cmd@v1
+      - name: Install VS Build Tools
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Install MSVC Compiler & Windows SDK
+        shell: pwsh
+        run: |
+          choco install -y visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041"
+
+      - name: Install Python 3 (Required for Windows Build)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Yarn (Required by VS Code Build)
+        run: npm install -g yarn
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
       - name: Build Zyde
-        run: npm run gulp vscode-win32-x64  # Change this if you modified gulp task name
+        run: yarn gulp vscode-win32-x64  # Change this if you modified gulp task name
 
       - name: Upload Zyde Artifacts
         uses: actions/upload-artifact@v4
