@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper version detection
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,30 +36,43 @@ jobs:
 
       - name: Install Visual Studio Build Tools
         run: |
-          $InstallerPath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-          Start-Process -FilePath $InstallerPath -ArgumentList @(
-            "modify",
-            "--installPath", "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools",
+          # Download the Visual Studio installer bootstrapper if not available
+          if (-not (Test-Path "$env:TEMP\vs_buildtools.exe")) {
+            Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_buildtools.exe" -OutFile "$env:TEMP\vs_buildtools.exe"
+          }
+
+          # Install Build Tools with all required components
+          Start-Process -FilePath "$env:TEMP\vs_buildtools.exe" -ArgumentList @(
+            "--quiet",
+            "--wait",
+            "--norestart",
+            "--nocache",
+            "--installPath", """C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools""",
+            "--add", "Microsoft.VisualStudio.Workload.VCTools",
             "--add", "Microsoft.VisualStudio.Workload.NativeDesktop",
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
-            "--add", "Microsoft.VisualStudio.Component.Windows10SDK.20348",
-            "--add", "Microsoft.VisualStudio.Component.VC.ATL",
-            "--add", "Microsoft.VisualStudio.Component.VC.MFC",
-            "--add", "Microsoft.VisualStudio.Component.VC.MFC.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x64.x86.Spectre",
-            "--add", "Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
-            "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project",
-            "--add", "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset",
             "--add", "Microsoft.VisualStudio.Component.Windows10SDK.22621",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATL",
+            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC",
+            "--add", "Microsoft.VisualStudio.Component.VC.CMake.Project",
             "--add", "Microsoft.VisualStudio.Component.VC.CoreIde",
-            "--quiet", "--wait", "--norestart"
+            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22621"
           ) -NoNewWindow -Wait
         shell: pwsh
 
-      - name: Verify Installed Components
+      - name: Verify Installed Visual Studio Components
         run: |
-          "Checking Installed Components..."
-          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -format json | ConvertFrom-Json | Out-String
+          Write-Host "Checking Installed VS Components..."
+          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -format json | ConvertFrom-Json | ForEach-Object { $_.installationPath }
+
+          $msvcDir = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\"
+          if (Test-Path $msvcDir) {
+            Write-Host "VC Tools directory exists at: $msvcDir"
+            Get-ChildItem $msvcDir -Directory | ForEach-Object { Write-Host "Found MSVC version: $($_.Name)" }
+          } else {
+            Write-Error "VC Tools directory not found at expected location: $msvcDir"
+            exit 1
+          }
         shell: pwsh
 
       - name: Set up Visual Studio Environment
@@ -66,26 +81,50 @@ jobs:
           vsversion: '2022'
           arch: 'x64'
 
-      - name: Configure NPM for MSVC
+      - name: Diagnostic - Verify C++ Compiler
         run: |
-          echo "msvs_version=2022" > $env:USERPROFILE\.npmrc
-        shell: pwsh
+          echo "Checking C++ compiler..."
+          where cl.exe
+          cl.exe 2>&1 | findstr /C:"Microsoft"
+          echo "VCTargetsPath: %VCTargetsPath%"
+          echo "VCToolsInstallDir: %VCToolsInstallDir%"
+          echo "VSINSTALLDIR: %VSINSTALLDIR%"
+        shell: cmd
+
+      - name: Configure NPM
+        run: |
+          npm config set msvs_version 2022
+          npm config set python %PYTHON_PATH%
+          npm config list
+        shell: cmd
 
       - name: Clean npm Cache
         run: npm cache clean --force
         shell: cmd
 
       - name: Install Required Dependencies
-        run: |
-          npm install
+        run: npm install --no-optional
         shell: cmd
 
+      - name: Install Gulp Globally
+        run: npm install -g gulp-cli
+        shell: cmd
+
+      - name: Compile in Development Mode First
+        run: |
+          npm run compile
+        shell: cmd
+        continue-on-error: true
+
       - name: Build VS Code (Windows x64)
-        run: npm run gulp vscode-win32-x64
+        run: |
+          set VSCODE_ARCH=x64
+          npm run gulp vscode-win32-x64
         shell: cmd
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: vscode-win32-x64
-          path: .build/win32-x64  # Adjust if necessary
+          name: zyde-win32-x64
+          path: .build/win32-x64
+          if-no-files-found: error
