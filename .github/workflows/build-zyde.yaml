@@ -1,59 +1,119 @@
-name: Build Zyde
+name: Build VS Code
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
+    inputs:
+      platforms:
+        description: 'Platforms to build (comma-separated: windows, macos, linux)'
+        required: true
+        default: 'windows,macos,linux'
 
 jobs:
-  build:
+  build-windows:
+    name: Build Windows (x64)
+    if: ${{ !inputs.platforms || contains(inputs.platforms, 'windows') }}
     runs-on: windows-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.18.1
+          node-version: '20'
           cache: 'npm'
 
-      - name: Install Python 3 (Required for node-gyp)
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      - name: Install VS Build Tools (C++ with Spectre-mitigated libs)
-        shell: pwsh
-        run: |
-          choco install -y visualstudio2022buildtools --package-parameters `
-            "--add Microsoft.VisualStudio.Workload.VCTools `
-            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-            --add Microsoft.VisualStudio.Component.VC.ATL.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.MFC.Spectre `
-            --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
-            --add Microsoft.VisualStudio.Component.Windows11SDK.22621 "
+      - name: Setup Visual Studio Build Tools
+        uses: microsoft/setup-msbuild@v1.3
+        with:
+          vs-version: '17.0'
+          vs-prerelease: true
 
+      - name: Install Visual C++ components
+        run: |
+          # Using vs_buildtools.exe to install required components
+          Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe
+          Start-Process -FilePath vs_buildtools.exe -ArgumentList "--quiet --wait --norestart --nocache --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.ATL.Spectre --add Microsoft.VisualStudio.Component.VC.MFC.Spectre" -Wait
+
+      - name: Configure Node.js for Visual Studio 2022
+        run: |
           npm config set msvs_version 2022
 
-      - name: Set Up MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Install dependencies
+        run: npm install
 
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+      - name: Build VS Code for Windows (x64)
+        run: |
+          npm install
+          npm run gulp vscode-win32-x64
 
-      - name: Build Zyde
-        run: npm run gulp vscode-win32-x64  # Modify if you changed the gulp task name
-
-      - name: Upload Zyde Artifacts
+      - name: Upload Windows build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: zyde-win32-x64
-          path: .build/zyde-win32-x64
-          retention-days: 7
+          name: vscode-win32-x64
+          path: .build/win32-x64
+
+  build-macos:
+    name: Build macOS
+    if: ${{ !inputs.platforms || contains(inputs.platforms, 'macos') }}
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build VS Code for macOS
+        run: |
+          npm install
+          npm run gulp vscode-darwin-x64
+
+      - name: Upload macOS build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vscode-darwin-x64
+          path: .build/darwin-x64
+
+  build-linux:
+    name: Build Linux
+    if: ${{ !inputs.platforms || contains(inputs.platforms, 'linux') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential g++ libx11-dev libxkbfile-dev libsecret-1-dev libkrb5-dev python-is-python3 fakeroot rpm
+          npm install
+
+      - name: Build VS Code for Linux
+        run: |
+          npm install
+          npm run gulp vscode-linux-x64
+
+      - name: Upload Linux build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vscode-linux-x64
+          path: .build/linux-x64
