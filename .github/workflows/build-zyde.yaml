@@ -60,7 +60,7 @@ jobs:
         shell: cmd
 
       # Debug: List all files to check if the build output exists
-      - name: Debug: List Build Output
+      - name: List Build Output
         run: dir /s .build\
         shell: cmd
 
