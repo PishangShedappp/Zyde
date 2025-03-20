@@ -59,11 +59,6 @@ jobs:
           npm run gulp vscode-win32-x64
         shell: cmd
 
-      # Debug: List all files to check if the build output exists
-      - name: List Build Output
-        run: dir /s \
-        shell: cmd
-
       # Ensure the directory exists before uploading artifacts
       - name: Ensure Build Directory Exists
         run: mkdir .build/win32-x64
@@ -74,6 +69,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zyde-win32-x64
-          path: .build/win32-x64  # Change this if the actual output is different
+          path: D:/a/Zyde/VSCode-win32-x64  # Change this if the actual output is different
           if-no-files-found: warn  # Prevent errors if the folder is empty
 
