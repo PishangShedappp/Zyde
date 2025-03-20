@@ -61,7 +61,7 @@ jobs:
 
       # Debug: List all files to check if the build output exists
       - name: List Build Output
-        run: dir /s .build\
+        run: dir /s \
         shell: cmd
 
       # Ensure the directory exists before uploading artifacts
