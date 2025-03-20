@@ -59,12 +59,6 @@ jobs:
           npm run gulp vscode-win32-x64
         shell: cmd
 
-      # Ensure the directory exists before uploading artifacts
-      - name: Ensure Build Directory Exists
-        run: mkdir .build/win32-x64
-        shell: cmd
-        continue-on-error: true  # Avoid failure if the directory already exists
-
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:

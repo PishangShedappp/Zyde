@@ -18,7 +18,7 @@ const vfs = require('vinyl-fs');
 const rcedit = require('rcedit');
 
 const repoPath = path.dirname(__dirname);
-const buildPath = (/** @type {string} */ arch) => path.join(path.dirname(repoPath), `zyde-win32-${arch}`);
+const buildPath = (/** @type {string} */ arch) => path.join(path.dirname(repoPath), `VSCode-win32-${arch}`);
 const setupDir = (/** @type {string} */ arch, /** @type {string} */ target) => path.join(repoPath, '.build', `win32-${arch}`, `${target}-setup`);
 const issPath = path.join(__dirname, 'win32', 'code.iss');
 const innoSetupPath = path.join(path.dirname(path.dirname(require.resolve('innosetup'))), 'bin', 'ISCC.exe');
@@ -127,7 +127,7 @@ function buildWin32Setup(arch, target) {
  */
 function defineWin32SetupTasks(arch, target) {
 	const cleanTask = util.rimraf(setupDir(arch, target));
-	gulp.task(task.define(`zyde-win32-${arch}-${target}-setup`, task.series(cleanTask, buildWin32Setup(arch, target))));
+	gulp.task(task.define(`vscode-win32-${arch}-${target}-setup`, task.series(cleanTask, buildWin32Setup(arch, target))));
 }
 
 defineWin32SetupTasks('x64', 'system');
@@ -155,5 +155,5 @@ function updateIcon(executablePath) {
 	};
 }
 
-gulp.task(task.define('zyde-win32-x64-inno-updater', task.series(copyInnoUpdater('x64'), updateIcon(path.join(buildPath('x64'), 'tools', 'inno_updater.exe')))));
-gulp.task(task.define('zyde-win32-arm64-inno-updater', task.series(copyInnoUpdater('arm64'), updateIcon(path.join(buildPath('arm64'), 'tools', 'inno_updater.exe')))));
+gulp.task(task.define('vscode-win32-x64-inno-updater', task.series(copyInnoUpdater('x64'), updateIcon(path.join(buildPath('x64'), 'tools', 'inno_updater.exe')))));
+gulp.task(task.define('vscode-win32-arm64-inno-updater', task.series(copyInnoUpdater('arm64'), updateIcon(path.join(buildPath('arm64'), 'tools', 'inno_updater.exe')))));
